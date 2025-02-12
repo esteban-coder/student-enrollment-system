@@ -26,6 +26,13 @@ public class SectionEntity {
     @JoinColumn(name = "COURSE_ID")
     private CourseEntity course;
 
+    @ManyToOne
+    @JoinColumn(name = "INSTRUCTOR_ID")
+    private InstructorEntity instructor;
+
+/**/
     @OneToMany(mappedBy = "section")
     private List<EnrollmentEntity> enrollments;
+/**/
+
 }

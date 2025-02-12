@@ -22,6 +22,9 @@ public class StudentEntity {
     @Column(name ="AGE", nullable = false)
     private int age;
 
+/**/
     @OneToMany(mappedBy = "student")
     private List<EnrollmentEntity> enrollments;
+/**/
+
 }

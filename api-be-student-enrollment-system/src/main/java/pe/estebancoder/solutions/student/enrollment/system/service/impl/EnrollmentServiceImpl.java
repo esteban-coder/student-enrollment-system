@@ -57,12 +57,21 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 throw new RuntimeException("Section is full");
             }
 
+
             // Verificar si hay cruce de horarios
+/*
             boolean scheduleConflict = student.getEnrollments().stream()
                     .anyMatch(e -> e.getSection().getSchedule().equals(section.getSchedule()));
 
             if (scheduleConflict) {
                 throw new RuntimeException("Schedule conflict detected");
+            }
+*/
+            for(EnrollmentEntity enrollment : student.getEnrollments()){
+                if(enrollment.getSection().getSchedule().equals(section.getSchedule())){
+                    throw new RuntimeException("Schedule conflict detected");
+
+                }
             }
 
             // Inscribir al alumno
