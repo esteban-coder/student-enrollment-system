@@ -33,61 +33,56 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Transactional
     @Override
     public EnrollmentResponseDto enrollStudent(EnrollmentRequestDto request) {
-        EnrollmentResponseDto response = new EnrollmentResponseDto();
-        List<Long> enrolledSections = new ArrayList<>();
-
         StudentEntity student = studentRepository.findById(request.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        // Obtener matrículas existentes (una sola consulta)
+        List<EnrollmentEntity> existingEnrollments = enrollmentRepository.findByStudentId(student.getId());
+        List<Long> enrolledSections = new ArrayList<>();
+
+        // Lista para almacenar los horarios de las nuevas secciones
+        List<String> newSectionSchedules = new ArrayList<>();
 
         for (Long sectionId : request.getSectionIds()) {
             SectionEntity section = sectionRepository.findById(sectionId)
                     .orElseThrow(() -> new RuntimeException("Section not found"));
 
-            // Validar si el alumno ya esta inscrito en el curso (dentro de alguna seccion)
-            boolean alreadyEnrolled = enrollmentRepository.findByStudentId(student.getId())
-                    .stream()
-                    .anyMatch(enrollment -> enrollment.getSection().getCourse().getId().equals(section.getCourse().getId()));
-
-            if (alreadyEnrolled) {
-                throw new RuntimeException("Student is already enrolled in this course");
-            }
-
-            // Validar si la seccion esta llena
+            // Validar si la sección está llena (solo una vez por sección)
             if (section.getEnrollments().size() >= section.getMaxCapacity()) {
                 throw new RuntimeException("Section is full");
             }
 
+            // Validar matrícula duplicada y cruces de horario con matrículas existentes
+            for (EnrollmentEntity enrollment : existingEnrollments) {
+                if (enrollment.getSection().getCourse().getId().equals(section.getCourse().getId())) {
+                    throw new RuntimeException("Student is already enrolled in this course");
+                }
 
-            // Verificar si hay cruce de horarios
-/*
-            boolean scheduleConflict = student.getEnrollments().stream()
-                    .anyMatch(e -> e.getSection().getSchedule().equals(section.getSchedule()));
-
-            if (scheduleConflict) {
-                throw new RuntimeException("Schedule conflict detected");
-            }
-*/
-            for(EnrollmentEntity enrollment : student.getEnrollments()){
-                if(enrollment.getSection().getSchedule().equals(section.getSchedule())){
-                    throw new RuntimeException("Schedule conflict detected");
-
+                if (enrollment.getSection().getSchedule().equals(section.getSchedule())) {
+                    throw new RuntimeException("Schedule conflict detected with existing enrollment");
                 }
             }
 
-            // Inscribir al alumno
+            // Validar cruces de horario entre las nuevas secciones
+            if (newSectionSchedules.contains(section.getSchedule())) {
+                throw new RuntimeException("Schedule conflict detected between new sections");
+            }
+            newSectionSchedules.add(section.getSchedule());
+
+            // Crear matrícula
             EnrollmentEntity enrollment = new EnrollmentEntity();
             enrollment.setStudent(student);
             enrollment.setSection(section);
             enrollment.setType("Student");
-
             enrollmentRepository.save(enrollment);
             enrolledSections.add(sectionId);
         }
 
+        // Crear respuesta fuera del loop
+        EnrollmentResponseDto response = new EnrollmentResponseDto();
         response.setStudentId(student.getId());
         response.setEnrolledSections(enrolledSections);
         response.setMessage("Enrollment successful");
-
         return response;
     }
 }
