@@ -1,14 +1,12 @@
 package pe.estebancoder.solutions.student.enrollment.system.dto;
 
 import lombok.Data;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
 @Data
-public class EnrollmentRequestDto {
+public class EnrollmentResponseDTO {
     private Long studentId;
-    private List<Long> sectionIds;
+    private List<Long> enrolledSections;
+    private String message; // Mensaje de éxito o error
 }

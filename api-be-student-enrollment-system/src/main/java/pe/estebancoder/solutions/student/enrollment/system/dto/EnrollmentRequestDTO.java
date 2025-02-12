@@ -5,8 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class EnrollmentResponseDto {
+public class EnrollmentRequestDTO {
     private Long studentId;
-    private List<Long> enrolledSections;
-    private String message; // Mensaje de éxito o error
+    private List<Long> sectionIds;
 }

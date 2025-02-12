@@ -2,8 +2,8 @@ package pe.estebancoder.solutions.student.enrollment.system.service.impl;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentRequestDto;
-import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentResponseDto;
+import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentRequestDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.entity.EnrollmentEntity;
 import pe.estebancoder.solutions.student.enrollment.system.entity.SectionEntity;
 import pe.estebancoder.solutions.student.enrollment.system.entity.StudentEntity;
@@ -32,7 +32,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Transactional
     @Override
-    public EnrollmentResponseDto enrollStudent(EnrollmentRequestDto request) {
+    public EnrollmentResponseDTO enrollStudent(EnrollmentRequestDTO request) {
         StudentEntity student = studentRepository.findById(request.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
@@ -79,7 +79,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
 
         // Crear respuesta fuera del loop
-        EnrollmentResponseDto response = new EnrollmentResponseDto();
+        EnrollmentResponseDTO response = new EnrollmentResponseDTO();
         response.setStudentId(student.getId());
         response.setEnrolledSections(enrolledSections);
         response.setMessage("Enrollment successful");

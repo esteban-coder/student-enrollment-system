@@ -1,8 +1,8 @@
 package pe.estebancoder.solutions.student.enrollment.system.service;
 
-import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentRequestDto;
-import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentResponseDto;
+import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentRequestDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentResponseDTO;
 
 public interface EnrollmentService {
-    EnrollmentResponseDto enrollStudent(EnrollmentRequestDto request);
+    EnrollmentResponseDTO enrollStudent(EnrollmentRequestDTO request);
 }
