@@ -3,6 +3,8 @@ package pe.estebancoder.solutions.student.enrollment.system.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity(name = "EnrollmentEntity")
 @Table(name = "TBL_ENROLLMENT" /*, schema = "ENROLLMENT"*/)
@@ -22,5 +24,17 @@ public class EnrollmentEntity {
     @JoinColumn(name = "SECTION_ID")
     private SectionEntity section;
 
-    private String type;
+    @Column(name = "ENROLLMENT_DATE", nullable = false)
+    private LocalDateTime enrollmentDate;
+
+    @Column(name = "TYPE", nullable = false)
+    private String type; // STUDENT, AUDIT
+
+    @Column(name ="STATUS", nullable = true)
+    private String status; // ENROLLED, WITHDRAWN, COMPLETED
+
+    @PrePersist
+    void setStatus() {
+        this.status="1";
+    }
 }

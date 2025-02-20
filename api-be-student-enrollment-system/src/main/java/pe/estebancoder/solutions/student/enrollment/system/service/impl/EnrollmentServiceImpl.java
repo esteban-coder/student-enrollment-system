@@ -2,6 +2,7 @@ package pe.estebancoder.solutions.student.enrollment.system.service.impl;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentProjection;
 import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentRequestDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.entity.EnrollmentEntity;
@@ -28,6 +29,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         this.studentRepository = studentRepository;
         this.sectionRepository = sectionRepository;
         this.enrollmentRepository = enrollmentRepository;
+    }
+
+    public List<EnrollmentProjection> getAll(){
+        return enrollmentRepository.getAllEnrollments();
     }
 
     @Transactional

@@ -1,15 +1,14 @@
 package pe.estebancoder.solutions.student.enrollment.system.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentProjection;
 import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentRequestDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.service.EnrollmentService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/enrollments")
@@ -19,6 +18,11 @@ public class EnrollmentController {
 
     public EnrollmentController(EnrollmentService enrollmentService) {
         this.enrollmentService = enrollmentService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<EnrollmentProjection>> getAllEnrollments() {
+        return ResponseEntity.ok(enrollmentService.getAll());
     }
 
     @PostMapping("/enroll")
