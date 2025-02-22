@@ -2,6 +2,8 @@ package pe.estebancoder.solutions.student.enrollment.system.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import pe.estebancoder.solutions.student.enrollment.system.enums.CourseStatus;
+import pe.estebancoder.solutions.student.enrollment.system.enums.DepartmentStatus;
 
 @Data
 @Entity(name = "DepartmentEntity")
@@ -23,7 +25,7 @@ public class DepartmentEntity {
     private String status; // // ACTIVE, INACTIVE
 
     @PrePersist
-    void setStatus() {
-        this.status = "1";
+    void setInitialStatus() {
+        this.status = DepartmentStatus.ACTIVE.getCode();
     }
 }

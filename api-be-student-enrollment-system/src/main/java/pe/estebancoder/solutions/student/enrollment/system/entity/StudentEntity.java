@@ -2,6 +2,7 @@ package pe.estebancoder.solutions.student.enrollment.system.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import pe.estebancoder.solutions.student.enrollment.system.enums.StudentStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -50,7 +51,7 @@ public class StudentEntity {
     private List<EnrollmentEntity> enrollments;
 
     @PrePersist
-    void setStatus() {
-        this.status = "1";
+    void setInitialStatus() {
+        this.status = StudentStatus.ACTIVE.getCode();
     }
 }

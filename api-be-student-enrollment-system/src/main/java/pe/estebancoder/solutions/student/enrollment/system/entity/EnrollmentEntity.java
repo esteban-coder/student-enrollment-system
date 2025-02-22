@@ -2,6 +2,7 @@ package pe.estebancoder.solutions.student.enrollment.system.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import pe.estebancoder.solutions.student.enrollment.system.enums.EnrollmentStatus;
 
 import java.time.LocalDateTime;
 
@@ -33,8 +34,8 @@ public class EnrollmentEntity {
     private Double finalGrade;
 
     @PrePersist
-    void setStatus() {
-        this.status = "1";
+    void setInitialStatus() {
+        this.status = EnrollmentStatus.ENROLLED.getCode();
         this.enrollmentDate = LocalDateTime.now();
     }
 }
