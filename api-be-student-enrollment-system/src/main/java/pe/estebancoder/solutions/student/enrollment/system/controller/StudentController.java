@@ -43,5 +43,16 @@ public class StudentController {
     public ResponseEntity<List<StudentResponseDTO>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
+
+    @GetMapping(path = "/search-like-name")
+    public ResponseEntity<List<StudentResponseDTO>> findStudentsLikeName(@RequestParam String name) {
+        return ResponseEntity.ok(studentService.findStudentsLikeName(name));
+    }
+
+    @GetMapping(path = "/search-by-dni")
+    public ResponseEntity<StudentResponseDTO> findStudentByDNI(@RequestParam String dni) {
+        StudentResponseDTO studentResponseDTO = studentService.findStudentByDNI(dni);
+        return ResponseEntity.ok(studentResponseDTO);
+    }
 }
 

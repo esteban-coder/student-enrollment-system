@@ -22,8 +22,13 @@ public class StudentServiceImpl implements StudentService {
         this.studentMapper = studentMapper;
     }
 
+    @Transactional
     @Override
     public StudentResponseDTO createStudent(CreateStudentRequestDTO createStudentRequestDTO) {
+        if(studentRepository.countByDni(createStudentRequestDTO.getDni())>0){
+            throw new RuntimeException("Student already registered");
+        }
+
         StudentEntity studentEntity = studentMapper.toEntity(createStudentRequestDTO);
         studentEntity = studentRepository.save(studentEntity);
         return studentMapper.toDTO(studentEntity);
@@ -33,6 +38,11 @@ public class StudentServiceImpl implements StudentService {
     public StudentResponseDTO updateStudent(Long id, CreateStudentRequestDTO createStudentRequestDTO) {
         StudentEntity existingStudent = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        if(!existingStudent.getDni().equals(createStudentRequestDTO.getDni()) &&
+                studentRepository.countByDni(createStudentRequestDTO.getDni())>0){
+            throw new RuntimeException("Student already registered with updated DNI");
+        }
 
         studentMapper.updateEntityFromDto(createStudentRequestDTO, existingStudent); // Actualiza la entidad con los valores del DTO
         existingStudent = studentRepository.save(existingStudent);
@@ -57,5 +67,18 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentResponseDTO> getAllStudents() {
         List<StudentEntity> students = studentRepository.findAll();
         return studentMapper.toListDTO(students);
+    }
+
+    @Override
+    public List<StudentResponseDTO> findStudentsLikeName(String name) {
+        List<StudentEntity> students = studentRepository.findLikeName("%" + name + "%");
+        return studentMapper.toListDTO(students);
+    }
+
+    @Override
+    public StudentResponseDTO findStudentByDNI(String dni) {
+        StudentEntity studentEntity = studentRepository.findByDNI(dni)
+                .orElseThrow(() -> new RuntimeException("Student not found by dni"));
+        return studentMapper.toDTO(studentEntity);
     }
 }

@@ -11,4 +11,6 @@ public interface StudentService {
     void deleteStudent(Long id);
     StudentResponseDTO getStudentById(Long id);
     List<StudentResponseDTO> getAllStudents();
+    List<StudentResponseDTO> findStudentsLikeName(String name);
+    StudentResponseDTO findStudentByDNI(String dni);
 }
