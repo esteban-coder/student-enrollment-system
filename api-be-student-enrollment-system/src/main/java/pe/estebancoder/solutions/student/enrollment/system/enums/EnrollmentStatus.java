@@ -1,9 +1,9 @@
 package pe.estebancoder.solutions.student.enrollment.system.enums;
 
 public enum EnrollmentStatus implements BaseEnum {
-    ENROLLED("1"),    // Matrícula activa
-    WITHDRAWN("0"),   // Estudiante se retiró del curso
-    COMPLETED("2");   // Estudiante completó el curso
+    ENROLLED("1"),    // Matrícula activa, con curso(s) en progreso
+    WITHDRAWN("0"),   // Se retiró de todos los cursos
+    COMPLETED("2");   // Terminó el semestre (con al menos un curso aprobado o desaprobado)
 
     private final String code;
     EnrollmentStatus(String code) {

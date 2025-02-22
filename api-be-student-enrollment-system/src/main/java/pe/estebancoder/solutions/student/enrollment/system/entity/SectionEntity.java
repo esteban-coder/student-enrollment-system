@@ -58,5 +58,6 @@ public class SectionEntity {
     @PrePersist
     void setInitialStatus() {
         this.status = SectionStatus.OPEN.getCode();
+        this.currentEnrollment = 0;
     }
 }
