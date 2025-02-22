@@ -2,8 +2,8 @@ package pe.estebancoder.solutions.student.enrollment.system.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.estebancoder.solutions.student.enrollment.system.dto.StudentRequestDTO;
-import pe.estebancoder.solutions.student.enrollment.system.dto.StudentResponseDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.request.CreateStudentRequestDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.response.StudentResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.service.StudentService;
 
 import java.util.List;
@@ -19,13 +19,13 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentResponseDTO> createStudent(@RequestBody StudentRequestDTO studentRequestDto) {
-        return ResponseEntity.ok(studentService.createStudent(studentRequestDto));
+    public ResponseEntity<StudentResponseDTO> createStudent(@RequestBody CreateStudentRequestDTO createStudentRequestDto) {
+        return ResponseEntity.ok(studentService.createStudent(createStudentRequestDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable Long id, @RequestBody StudentRequestDTO studentRequestDto) {
-        return ResponseEntity.ok(studentService.updateStudent(id, studentRequestDto));
+    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable Long id, @RequestBody CreateStudentRequestDTO createStudentRequestDto) {
+        return ResponseEntity.ok(studentService.updateStudent(id, createStudentRequestDto));
     }
 
     @DeleteMapping("/{id}")

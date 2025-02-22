@@ -2,8 +2,8 @@ package pe.estebancoder.solutions.student.enrollment.system.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import pe.estebancoder.solutions.student.enrollment.system.dto.SectionRequestDTO;
-import pe.estebancoder.solutions.student.enrollment.system.dto.SectionResponseDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.request.CreateSectionRequestDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.response.SectionResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.entity.SectionEntity;
 
 import java.util.List;
@@ -24,11 +24,11 @@ public class SectionMapper {
         return lstE.stream().map(e-> toDTO(e)).toList();
     }
 
-    public SectionEntity toEntity(SectionRequestDTO d) {
+    public SectionEntity toEntity(CreateSectionRequestDTO d) {
         return modelMapper.map(d,SectionEntity.class);
     }
 
-    public List<SectionEntity> toListEntity(List<SectionRequestDTO> lstD) {
+    public List<SectionEntity> toListEntity(List<CreateSectionRequestDTO> lstD) {
         return lstD.stream().map(e-> toEntity(e)).toList();
     }
 }

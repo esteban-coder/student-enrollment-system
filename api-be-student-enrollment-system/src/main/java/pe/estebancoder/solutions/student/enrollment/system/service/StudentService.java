@@ -1,13 +1,13 @@
 package pe.estebancoder.solutions.student.enrollment.system.service;
 
-import pe.estebancoder.solutions.student.enrollment.system.dto.StudentRequestDTO;
-import pe.estebancoder.solutions.student.enrollment.system.dto.StudentResponseDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.request.CreateStudentRequestDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.response.StudentResponseDTO;
 
 import java.util.List;
 
 public interface StudentService {
-    StudentResponseDTO createStudent(StudentRequestDTO studentRequestDto);
-    StudentResponseDTO updateStudent(Long id, StudentRequestDTO studentRequestDto);
+    StudentResponseDTO createStudent(CreateStudentRequestDTO createStudentRequestDto);
+    StudentResponseDTO updateStudent(Long id, CreateStudentRequestDTO createStudentRequestDto);
     void deleteStudent(Long id);
     StudentResponseDTO getStudentById(Long id);
     List<StudentResponseDTO> getAllStudents();
