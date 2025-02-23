@@ -18,9 +18,7 @@ import pe.estebancoder.solutions.student.enrollment.system.repository.SectionRep
 import pe.estebancoder.solutions.student.enrollment.system.repository.StudentRepository;
 import pe.estebancoder.solutions.student.enrollment.system.service.EnrollmentService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EnrollmentServiceImpl implements EnrollmentService {
@@ -40,8 +38,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         //this.enrollmentDetailRepository = enrollmentDetailRepository;
     }
 
-    public List<EnrollmentInfoDTO> getAllEnrollmentInfo(String studentCode){
-        List<EnrollmentInfoProjection> projections = enrollmentRepository.getAllEnrollmentInfo(studentCode);
+    public List<EnrollmentInfoDTO> getAllEnrollmentInfo(String studentCode, String academicPeriod){
+        List<EnrollmentInfoProjection> projections = enrollmentRepository.getAllEnrollmentInfo(studentCode, academicPeriod);
         return EnrollmentInfoMapper.toDTOList(projections);
     }
 
@@ -51,17 +49,27 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         StudentEntity student = studentRepository.findById(request.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
+        // Crear matricula cabecera
+        EnrollmentEntity enrollment = new EnrollmentEntity();
+        Integer totalCredits = 0;
+
         // Obtener matrículas existentes (una sola consulta)
-        Optional<EnrollmentEntity> existingEnrollment = enrollmentRepository.findByStudentId(student.getId());
-        List<Long> enrolledSections = new ArrayList<>();
+        Optional<EnrollmentEntity> optExistingEnrollment = enrollmentRepository.findByStudentIdAndAcademicPeriod(student.getId(), "2024-1");
+        if(optExistingEnrollment.isPresent()) {
+            EnrollmentEntity existingEnrollment = optExistingEnrollment.get();
+            totalCredits = existingEnrollment.getTotalCredits();
+            enrollment = existingEnrollment;
+        }
+        else{
+            enrollment.setDetails(new ArrayList<>()); // Obligatorio si no se inicializa en el Entity con = new ArrayList<>() //no se pone arriba, se comprueba que si se creó sin details, al consulta, viene una lista vacia
+            enrollment.setStudent(student);
+            enrollment.setAcademicPeriod("2024-1");
+        }
 
         // Lista para almacenar los horarios de las nuevas secciones
         List<String> newSectionSchedules = new ArrayList<>();
-
-        // Crear matricula cabecera
-        EnrollmentEntity enrollment = new EnrollmentEntity();
-        enrollment.setDetails(new ArrayList<>()); // Obligatorio si no se inicializa en el Entity con = new ArrayList<>()
-        Integer totalCredits = 0;
+        // Lista para almacenar los IDs de cursos de las nuevas secciones
+        Set<Long> newCoursesIds = new HashSet<>();
 
         for (EnrollmentDetailRequestDTO enrollmentDetailRequestDTO : request.getEnrollmentDetails()) {
             Long sectionId = enrollmentDetailRequestDTO.getSectionId();
@@ -78,8 +86,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             }
 
             // Validar matrícula duplicada y cruces de horario con matrículas existentes
-            if(existingEnrollment.isPresent()) {
-                for (EnrollmentDetailEntity enrollmentDetail : existingEnrollment.get().getDetails()) {
+            if(optExistingEnrollment.isPresent()) {
+                for (EnrollmentDetailEntity enrollmentDetail : optExistingEnrollment.get().getDetails()) {
 
                     if (enrollmentDetail.getSection().getCourse().getId().equals(section.getCourse().getId())) {
                         throw new RuntimeException("Student is already enrolled in this course");
@@ -89,6 +97,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                         throw new RuntimeException("Schedule conflict detected with existing enrollment");
                     }
                 }
+            }
+
+            // Validar que no haya duplicidad de curso entre las nuevas secciones
+            if (!newCoursesIds.add(section.getCourse().getId())) {
+                throw new RuntimeException("Cannot enroll in multiple sections of the same course");
             }
 
             // Validar cruces de horario entre las nuevas secciones
@@ -110,8 +123,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             sectionRepository.updateEnrolledStudentCount(section.getId());
         }
 
-        enrollment.setStudent(student);
-        enrollment.setAcademicPeriod("2025-1");
+
         enrollment.setTotalCredits(totalCredits);
         enrollmentRepository.save(enrollment);
 
@@ -124,7 +136,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         response.setAcademicPeriod(enrollment.getAcademicPeriod());
         response.setTotalCredits(enrollment.getTotalCredits());
         response.setEnrollmentDate(enrollment.getEnrollmentDate());
-        response.setStatus(enrollment.getStatus());
+        // response.setStatus(enrollment.getStatus());
+        response.setStatus(EnrollmentInfoMapper.mapEnrollmentStatus(enrollment.getStatus()));
 
         List<EnrollmentDetailResponseDTO> details = new ArrayList<>();
         enrollment.getDetails().forEach(detail -> {
@@ -137,7 +150,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             detailResponse.setSchedule(detail.getSection().getSchedule());
             detailResponse.setInstructorName(detail.getSection().getInstructor().getFullName());
             detailResponse.setCredits(detail.getSection().getCourse().getCredits());
-            detailResponse.setStatus(detail.getStatus());
+            // detailResponse.setStatus(detail.getStatus());
+            detailResponse.setStatus(EnrollmentInfoMapper.mapEnrollmentDetailStatus(detail.getStatus()));
             details.add(detailResponse);
         });
         response.setDetails(details);

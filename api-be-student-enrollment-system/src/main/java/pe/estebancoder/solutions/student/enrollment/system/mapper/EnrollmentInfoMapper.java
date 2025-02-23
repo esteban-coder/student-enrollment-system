@@ -52,14 +52,6 @@ public class EnrollmentInfoMapper {
                 .collect(Collectors.toList());
     }
 
-    private static String mapEnrollmentStatus(String code) {
-        try {
-            return EnrollmentStatus.fromCode(code).name();
-        } catch (IllegalArgumentException e) {
-            return "UNKNOWN";
-        }
-    }
-
     private static String mapDetailStatus(String code) {
         try {
             return EnrollmentDetailStatus.fromCode(code).name();
@@ -75,4 +67,21 @@ public class EnrollmentInfoMapper {
             return "UNKNOWN";
         }
     }
+
+    public static String mapEnrollmentStatus(String code) {
+        try {
+            return EnrollmentStatus.fromCode(code).name();
+        } catch (IllegalArgumentException e) {
+            return "UNKNOWN";
+        }
+    }
+
+    public static String mapEnrollmentDetailStatus(String code) {
+        try {
+            return EnrollmentDetailStatus.fromCode(code).name();
+        } catch (IllegalArgumentException e) {
+            return "UNKNOWN";
+        }
+    }
+
 }

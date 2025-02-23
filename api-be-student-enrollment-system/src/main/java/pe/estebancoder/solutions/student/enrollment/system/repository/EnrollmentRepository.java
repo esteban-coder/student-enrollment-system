@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface EnrollmentRepository extends JpaRepository<EnrollmentEntity, Long> {
     Optional<EnrollmentEntity> findByStudentId(Long studentId);
+    Optional<EnrollmentEntity> findByStudentIdAndAcademicPeriod(Long studentId, String academicPeriod);
     // List<EnrollmentEntity> findBySectionId(Long sectionId);
 
     // language=SQL
@@ -30,8 +31,10 @@ public interface EnrollmentRepository extends JpaRepository<EnrollmentEntity, Lo
         INNER JOIN TBL_COURSE tc ON ts.COURSE_ID = tc.COURSE_ID
         INNER JOIN TBL_INSTRUCTOR ti ON ti.INSTRUCTOR_ID = ts.INSTRUCTOR_ID
         INNER JOIN TBL_STUDENT ts2 ON ts2.STUDENT_ID = te.STUDENT_ID
-        WHERE (ts2.STUDENT_CODE = :studentCode OR :studentCode IS NULL)
+        WHERE 
+            (ts2.STUDENT_CODE = :studentCode OR :studentCode IS NULL) AND
+            (te.ACADEMIC_PERIOD = :academicPeriod OR :academicPeriod IS NULL)
     """, nativeQuery = true)
-    List<EnrollmentInfoProjection> getAllEnrollmentInfo(String studentCode);
+    List<EnrollmentInfoProjection> getAllEnrollmentInfo(String studentCode, String academicPeriod);
 
 }

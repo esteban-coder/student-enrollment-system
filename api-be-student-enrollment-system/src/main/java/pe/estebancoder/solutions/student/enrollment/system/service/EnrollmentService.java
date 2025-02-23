@@ -7,6 +7,6 @@ import pe.estebancoder.solutions.student.enrollment.system.dto.response.Enrollme
 import java.util.List;
 
 public interface EnrollmentService {
-    List<EnrollmentInfoDTO> getAllEnrollmentInfo(String studentCode);
+    List<EnrollmentInfoDTO> getAllEnrollmentInfo(String studentCode, String academicPeriod);
     EnrollmentResponseDTO enrollStudent(EnrollmentRequestDTO request);
 }

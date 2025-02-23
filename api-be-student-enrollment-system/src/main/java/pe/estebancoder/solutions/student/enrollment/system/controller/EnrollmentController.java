@@ -1,5 +1,6 @@
 package pe.estebancoder.solutions.student.enrollment.system.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,16 +25,22 @@ public class EnrollmentController {
 
     @GetMapping
     public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfo() {
-        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(null));
+        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(null, null));
     }
 
     @GetMapping("/{studentCode}")
     public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfoByStudentCode(@PathVariable String studentCode) {
-        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(studentCode));
+        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(studentCode, null));
+    }
+
+    @GetMapping("/{studentCode}/{academicPeriod}")
+    public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfoByStudentCodeAndAcademicPeriod(@PathVariable String studentCode, @PathVariable String academicPeriod) {
+        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(studentCode, academicPeriod));
     }
 
     @PostMapping("/enroll")
-    public ResponseEntity<CustomResponseDTO<EnrollmentResponseDTO>> enrollStudent(@RequestBody EnrollmentRequestDTO request) {
+    public ResponseEntity<CustomResponseDTO<EnrollmentResponseDTO>> enrollStudent(@Valid @RequestBody EnrollmentRequestDTO request) {
+
         EnrollmentResponseDTO enrollmentDTO = enrollmentService.enrollStudent(request);
         //return ResponseEntity.ok(enrollmentDTO);
         CustomResponseDTO<EnrollmentResponseDTO> responseDTO = new CustomResponseDTO<>();
