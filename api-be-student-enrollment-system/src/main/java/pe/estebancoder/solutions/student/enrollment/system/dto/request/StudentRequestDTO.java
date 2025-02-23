@@ -1,13 +1,12 @@
 package pe.estebancoder.solutions.student.enrollment.system.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-public class CreateStudentRequestDTO {
+public class StudentRequestDTO {
     @NotBlank(message = "El DNI es obligatorio")
     @Pattern(regexp = "\\d{8}", message = "El DNI debe tener exactamente 8 dígitos")
     private String dni;

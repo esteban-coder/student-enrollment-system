@@ -3,7 +3,7 @@ package pe.estebancoder.solutions.student.enrollment.system.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.estebancoder.solutions.student.enrollment.system.dto.request.CreateStudentRequestDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.request.StudentRequestDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.StudentResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.service.StudentService;
 
@@ -20,13 +20,13 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentResponseDTO> createStudent(@Valid @RequestBody CreateStudentRequestDTO createStudentRequestDto) {
-        return ResponseEntity.ok(studentService.createStudent(createStudentRequestDto));
+    public ResponseEntity<StudentResponseDTO> createStudent(@Valid @RequestBody StudentRequestDTO studentRequestDto) {
+        return ResponseEntity.ok(studentService.createStudent(studentRequestDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable Long id, @Valid @RequestBody CreateStudentRequestDTO createStudentRequestDto) {
-        return ResponseEntity.ok(studentService.updateStudent(id, createStudentRequestDto));
+    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable Long id, @Valid @RequestBody StudentRequestDTO studentRequestDto) {
+        return ResponseEntity.ok(studentService.updateStudent(id, studentRequestDto));
     }
 
     @DeleteMapping("/{id}")
@@ -53,6 +53,12 @@ public class StudentController {
     @GetMapping(path = "/search-by-dni")
     public ResponseEntity<StudentResponseDTO> findStudentByDNI(@RequestParam String dni) {
         StudentResponseDTO studentResponseDTO = studentService.findStudentByDNI(dni);
+        return ResponseEntity.ok(studentResponseDTO);
+    }
+
+    @GetMapping(path = "/search-by-studentcode")
+    public ResponseEntity<StudentResponseDTO> findStudentByStudentCode(@RequestParam String studentCode) {
+        StudentResponseDTO studentResponseDTO = studentService.findStudentByStudentCode(studentCode);
         return ResponseEntity.ok(studentResponseDTO);
     }
 }

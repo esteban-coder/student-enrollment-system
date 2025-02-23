@@ -17,8 +17,8 @@ public class StudentEntity {
     @Column(name = "STUDENT_ID", nullable = false)
     private Long id;
 
-    @Column(name = "STUDENT_CODE", nullable = false, unique = true, length = 10)
-    private String studentCode; // Ejemplo: 20042030G
+    @Column(name = "STUDENT_CODE", nullable = false, unique = true, length = 9)
+    private String studentCode; // Ejemplo: 20000001A
 
     @Column(name = "DNI", nullable = false, unique = true, length = 8)
     private String dni;
