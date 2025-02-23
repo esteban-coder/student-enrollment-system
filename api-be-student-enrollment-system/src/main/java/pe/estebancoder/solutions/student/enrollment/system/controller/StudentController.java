@@ -1,5 +1,6 @@
 package pe.estebancoder.solutions.student.enrollment.system.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.estebancoder.solutions.student.enrollment.system.dto.request.CreateStudentRequestDTO;
@@ -19,12 +20,12 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentResponseDTO> createStudent(@RequestBody CreateStudentRequestDTO createStudentRequestDto) {
+    public ResponseEntity<StudentResponseDTO> createStudent(@Valid @RequestBody CreateStudentRequestDTO createStudentRequestDto) {
         return ResponseEntity.ok(studentService.createStudent(createStudentRequestDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable Long id, @RequestBody CreateStudentRequestDTO createStudentRequestDto) {
+    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable Long id, @Valid @RequestBody CreateStudentRequestDTO createStudentRequestDto) {
         return ResponseEntity.ok(studentService.updateStudent(id, createStudentRequestDto));
     }
 

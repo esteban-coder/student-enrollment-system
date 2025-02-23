@@ -46,8 +46,8 @@ public class SectionEntity {
     @Column(name = "MAX_CAPACITY", nullable = false)
     private int maxCapacity;
 
-    @Column(name = "CURRENT_ENROLLMENT", nullable = false)
-    private int currentEnrollment;
+    @Column(name = "ENROLLED_STUDENT_COUNT", nullable = false)
+    private int enrolledStudentCount;
 
     @Column(name = "STATUS", nullable = false, length = 1)
     private String status; // OPEN, CLOSED, CANCELLED, IN_PROGRESS, COMPLETED
@@ -58,6 +58,6 @@ public class SectionEntity {
     @PrePersist
     void setInitialStatus() {
         this.status = SectionStatus.OPEN.getCode();
-        this.currentEnrollment = 0;
+        this.enrolledStudentCount = 0;
     }
 }

@@ -17,4 +17,9 @@ public class StudentResponseDTO {
     private String gender;
     private LocalDate admissionDate;
     private String status;
+
+    /*
+    En un futuro aplicare estos campos, algunos quizas se graben en StudentEntity y otros se calcularan en runtime cada vez que sea consultado:
+    totalCreditsCompleted, currentGPA (Grade Point Average) y currentAcademicStatus => Enum AcademicStanding
+     */
 }
