@@ -4,13 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.CustomResponseDTO;
-import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentProjection;
+import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentInfoDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.request.EnrollmentRequestDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.service.EnrollmentService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,8 +23,13 @@ public class EnrollmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EnrollmentProjection>> getAllEnrollments() {
-        return ResponseEntity.ok(enrollmentService.getAll());
+    public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfo() {
+        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(null));
+    }
+
+    @GetMapping("/{studentCode}")
+    public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfoByStudentCode(@PathVariable String studentCode) {
+        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(studentCode));
     }
 
     @PostMapping("/enroll")

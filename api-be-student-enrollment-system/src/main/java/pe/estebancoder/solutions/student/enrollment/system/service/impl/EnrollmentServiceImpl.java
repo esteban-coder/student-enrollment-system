@@ -4,10 +4,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pe.estebancoder.solutions.student.enrollment.system.dto.request.EnrollmentDetailRequestDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentDetailResponseDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentInfoDTO;
 import pe.estebancoder.solutions.student.enrollment.system.entity.EnrollmentDetailEntity;
-import pe.estebancoder.solutions.student.enrollment.system.enums.EnrollmentDetailStatus;
-import pe.estebancoder.solutions.student.enrollment.system.repository.EnrollmentDetailRepository;
-import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentProjection;
+import pe.estebancoder.solutions.student.enrollment.system.mapper.EnrollmentInfoMapper;
+import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentInfoProjection;
 import pe.estebancoder.solutions.student.enrollment.system.dto.request.EnrollmentRequestDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.entity.EnrollmentEntity;
@@ -40,8 +40,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         //this.enrollmentDetailRepository = enrollmentDetailRepository;
     }
 
-    public List<EnrollmentProjection> getAll(){
-        return enrollmentRepository.getAllEnrollments();
+    public List<EnrollmentInfoDTO> getAllEnrollmentInfo(String studentCode){
+        List<EnrollmentInfoProjection> projections = enrollmentRepository.getAllEnrollmentInfo(studentCode);
+        return EnrollmentInfoMapper.toDTOList(projections);
     }
 
     @Transactional
