@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import pe.estebancoder.solutions.student.enrollment.system.enums.EnrollmentStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -35,20 +37,20 @@ public class EnrollmentEntity {
     @Column(name = "TOTAL_CREDITS", nullable = false)
     private Integer totalCredits;
 
-    @Column(name = "TOTAL_CREDITS_EARNED", nullable = false)
-    private Integer totalCreditsEarned;
-
-    @Column(name = "WEIGHTED_AVERAGE", precision = 4, scale = 2)
-    private Double weightedAverage;
+    @Column(name = "ENROLLMENT_DATE", nullable = false)
+    private LocalDateTime enrollmentDate;
 
     @Column(name = "STATUS", nullable = false, length = 10)
     private String status;  // ENROLLED, WITHDRAWN, COMPLETED
 
-    @Column(name = "ENROLLMENT_DATE", nullable = false)
-    private LocalDateTime enrollmentDate;
-
     @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EnrollmentDetailEntity> details;
+    private List<EnrollmentDetailEntity> details; /*= new ArrayList<>();*/ // Valido inicializarlo, pero preferentemente cuando sea necesario, ejem: cuando se trae de bd, se llama a su setter sobreescriiendolo, entonces es innecesario inicializacion para dicho caso.
+
+    @Column(name = "TOTAL_CREDITS_EARNED", nullable = false)
+    private Integer totalCreditsEarned;
+
+    @Column(name = "WEIGHTED_AVERAGE", precision = 4, scale = 2 /*, insertable = false, updatable = true */)
+    private BigDecimal weightedAverage;
 
     // Implementación a futuro
     /*

@@ -28,7 +28,8 @@ public class CourseEntity {
     @Column(name = "CREDITS", nullable = false)
     private int credits;
 
-    @ManyToOne
+    // FETCH LAZY, para que no traiga el departamento, si no lo usamos en varios de los casos de uso. si lo necesitara un caso de uso, hara el select a department de forma separada
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DEPARTMENT_ID", nullable = false)
     private DepartmentEntity department;
 

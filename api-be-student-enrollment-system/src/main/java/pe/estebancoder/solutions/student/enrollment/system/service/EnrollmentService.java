@@ -1,8 +1,8 @@
 package pe.estebancoder.solutions.student.enrollment.system.service;
 
 import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentProjection;
-import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentRequestDTO;
-import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentResponseDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.request.EnrollmentRequestDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentResponseDTO;
 
 import java.util.List;
 

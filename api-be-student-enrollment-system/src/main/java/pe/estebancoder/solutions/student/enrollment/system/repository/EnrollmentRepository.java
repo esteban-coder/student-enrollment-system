@@ -7,11 +7,12 @@ import pe.estebancoder.solutions.student.enrollment.system.repository.projection
 import pe.estebancoder.solutions.student.enrollment.system.entity.EnrollmentEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EnrollmentRepository extends JpaRepository<EnrollmentEntity, Long> {
-    List<EnrollmentEntity> findByStudentId(Long studentId);
-    List<EnrollmentEntity> findBySectionId(Long sectionId);
+    Optional<EnrollmentEntity> findByStudentId(Long studentId);
+    // List<EnrollmentEntity> findBySectionId(Long sectionId);
 
     // language=SQL
     @Query(value= """

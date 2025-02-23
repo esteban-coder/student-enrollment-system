@@ -17,6 +17,8 @@ public class SectionEntity {
     @Column(name = "SECTION_ID", nullable = false)
     private Long id;
 
+    //FETCH.EAGER por defecto, lo mantenemos asi, para que se realice el join y traiga la data, en lugar de FETCH.LAZY que realizaria una consulta select separada despues cuando se necesite
+    // @ManyToOne(fetch = FetchType.LAZY)
     @ManyToOne
     @JoinColumn(name = "COURSE_ID", nullable = false)
     private CourseEntity course;
@@ -52,8 +54,11 @@ public class SectionEntity {
     @Column(name = "STATUS", nullable = false, length = 1)
     private String status; // OPEN, CLOSED, CANCELLED, IN_PROGRESS, COMPLETED
 
+    // Comentado pues no vamos a usarlo por ejemplo: if (section.getEnrollmentDetails().size() >= section.getMaxCapacity()) { ... }, vamos a usar una query directa, en lugar de traernos en memoria toda la data de details
+/*
     @OneToMany(mappedBy = "section")
-    private List<EnrollmentEntity> enrollments;
+    private List<EnrollmentDetailEntity> enrollmentDetails;
+*/
 
     @PrePersist
     void setInitialStatus() {

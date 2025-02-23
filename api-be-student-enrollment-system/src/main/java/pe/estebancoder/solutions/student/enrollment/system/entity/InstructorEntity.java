@@ -29,7 +29,7 @@ public class InstructorEntity {
     @Column(name = "PHONE_NUMBER", nullable = false, length = 20)
     private String phoneNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRIMARY_DEPARTMENT_ID", nullable = false)
     private DepartmentEntity primaryDepartment;
 
