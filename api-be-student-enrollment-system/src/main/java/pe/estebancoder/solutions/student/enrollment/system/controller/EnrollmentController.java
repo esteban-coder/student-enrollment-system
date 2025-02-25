@@ -1,6 +1,7 @@
 package pe.estebancoder.solutions.student.enrollment.system.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +24,10 @@ public class EnrollmentController {
         this.enrollmentService = enrollmentService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfo() {
-        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(null, null));
-    }
-
-    @GetMapping("/{studentCode}")
-    public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfoByStudentCode(@PathVariable String studentCode) {
-        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(studentCode, null));
-    }
-
-    @GetMapping("/{studentCode}/{academicPeriod}")
-    public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfoByStudentCodeAndAcademicPeriod(@PathVariable String studentCode, @PathVariable String academicPeriod) {
-        return ResponseEntity.ok(enrollmentService.getAllEnrollmentInfo(studentCode, academicPeriod));
+    @GetMapping("/enrollments")
+    public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfo(@Param("studentCode") String studentCode, @Param("academicPeriod") String academicPeriod) {
+        List<EnrollmentInfoDTO> enrollments = enrollmentService.getAllEnrollmentInfo(studentCode, academicPeriod);
+        return ResponseEntity.ok(enrollments);
     }
 
     @PostMapping("/enroll")
@@ -50,4 +42,13 @@ public class EnrollmentController {
         responseDTO.setUri("/api/v1/enrollments/" + enrollmentDTO.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
+
+    @GetMapping("")
+    public ResponseEntity<List<EnrollmentResponseDTO>> getAll() {
+        return ResponseEntity.ok(enrollmentService.getAll());
+    }
+
+
+
+
 }

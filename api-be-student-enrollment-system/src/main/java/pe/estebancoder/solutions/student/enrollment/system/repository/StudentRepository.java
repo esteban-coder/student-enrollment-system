@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
 
-    @Query(value = "SELECT * FROM TBL_STUDENT WHERE FULLNAME LIKE :name AND STATUS = '1'", nativeQuery = true)
+    @Query(value = "SELECT * FROM TBL_STUDENT WHERE UPPER(FULLNAME) LIKE UPPER(:name) AND STATUS = '1'", nativeQuery = true)
     List<StudentEntity> findLikeName(@Param("name") String name);
 
     @Query(value = "SELECT * FROM TBL_STUDENT WHERE DNI = :dni AND STATUS = '1'", nativeQuery = true)

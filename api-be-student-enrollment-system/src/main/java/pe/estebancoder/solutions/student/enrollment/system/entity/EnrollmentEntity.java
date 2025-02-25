@@ -6,7 +6,6 @@ import pe.estebancoder.solutions.student.enrollment.system.enums.EnrollmentStatu
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -36,6 +35,12 @@ public class EnrollmentEntity {
 
     @Column(name = "TOTAL_CREDITS", nullable = false)
     private Integer totalCredits;
+
+    @Column(name = "TOTAL_ENROLLED_COURSES", nullable = false)
+    private Integer totalEnrolledCourses;
+
+    @Column(name = "COMMENTS", length = 200)
+    private String comments;
 
     @Column(name = "ENROLLMENT_DATE", nullable = false)
     private LocalDateTime enrollmentDate;
@@ -69,5 +74,6 @@ public class EnrollmentEntity {
         this.status = EnrollmentStatus.ENROLLED.getCode();
         this.enrollmentDate = LocalDateTime.now();
         this.totalCreditsEarned = 0;
+        this.totalEnrolledCourses = 0;
     }
 }

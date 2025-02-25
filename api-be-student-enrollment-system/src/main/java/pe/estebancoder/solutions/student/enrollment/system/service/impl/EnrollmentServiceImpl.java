@@ -51,14 +51,20 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
         // Crear matricula cabecera
         EnrollmentEntity enrollment = new EnrollmentEntity();
+        enrollment.setComments(request.getComments());
+
         Integer totalCredits = 0;
+        Integer totalEnrolledCourses = 0;
 
         // Obtener matrículas existentes (una sola consulta)
         Optional<EnrollmentEntity> optExistingEnrollment = enrollmentRepository.findByStudentIdAndAcademicPeriod(student.getId(), "2024-1");
         if(optExistingEnrollment.isPresent()) {
             EnrollmentEntity existingEnrollment = optExistingEnrollment.get();
             totalCredits = existingEnrollment.getTotalCredits();
+            totalEnrolledCourses = existingEnrollment.getTotalEnrolledCourses();
             enrollment = existingEnrollment;
+            enrollment.setStudent(student); // No es necesario, pues al ejecutar despues "existingEnrollment.getStudent().getFullName()" no hace la query a TBL_STUDENT, JPA lo toma de la query anterior "studentRepository.findById"
+            // System.out.println("Nombre estudiante: " + existingEnrollment.getStudent().getFullName());
         }
         else{
             enrollment.setDetails(new ArrayList<>()); // Obligatorio si no se inicializa en el Entity con = new ArrayList<>() //no se pone arriba, se comprueba que si se creó sin details, al consulta, viene una lista vacia
@@ -118,6 +124,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             enrollment.getDetails().add(enrollmentDetail); // obligatorio de lo contrario solo graba en cabecera pero nada en detalle
 
             totalCredits += enrollmentDetail.getCredits();
+            totalEnrolledCourses += 1;
 
             // Actualizar el contador de alumnos matriculados en dicha seccion
             sectionRepository.updateEnrolledStudentCount(section.getId());
@@ -125,14 +132,15 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
 
         enrollment.setTotalCredits(totalCredits);
+        enrollment.setTotalEnrolledCourses(totalEnrolledCourses);
         enrollmentRepository.save(enrollment);
 
         // Crear respuesta
         EnrollmentResponseDTO response = new EnrollmentResponseDTO();
         response.setId(enrollment.getId());
-        response.setStudentId(student.getId());
-        response.setStudentCode(student.getStudentCode());
-        response.setStudentFullName(student.getFullName());
+        response.setStudentId(enrollment.getStudent().getId());
+        response.setStudentCode(enrollment.getStudent().getStudentCode());
+        response.setStudentFullName(enrollment.getStudent().getFullName());
         response.setAcademicPeriod(enrollment.getAcademicPeriod());
         response.setTotalCredits(enrollment.getTotalCredits());
         response.setEnrollmentDate(enrollment.getEnrollmentDate());
@@ -157,6 +165,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         response.setDetails(details);
 
         return response;
+    }
+
+    @Override
+    public List<EnrollmentResponseDTO> getAll() {
+        return List.of();
     }
 }
 

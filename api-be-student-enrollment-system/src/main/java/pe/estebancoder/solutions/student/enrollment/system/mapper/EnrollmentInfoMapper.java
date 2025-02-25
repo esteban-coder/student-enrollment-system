@@ -6,7 +6,6 @@ import pe.estebancoder.solutions.student.enrollment.system.enums.EnrollmentStatu
 import pe.estebancoder.solutions.student.enrollment.system.enums.GradeStatus;
 import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentInfoProjection;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,9 +16,11 @@ public class EnrollmentInfoMapper {
 
         dto.setEnrollmentId(projection.getEnrollmentId());
         dto.setAcademicPeriod(projection.getAcademicPeriod());
-        dto.setEnrollmentStatus(mapEnrollmentStatus(projection.getEnrollStatus()));
         dto.setTotalCredits(projection.getTotalCredits());
+        dto.setTotalEnrolledCourses(projection.getTotalEnrolledCourses());
+        dto.setComments(projection.getComments());
         dto.setEnrollmentDate(projection.getEnrollmentDate());
+        dto.setEnrollmentStatus(mapEnrollmentStatus(projection.getEnrollStatus()));
 
         // Student mapping
         dto.setStudentCode(projection.getStudentCode());
@@ -27,8 +28,8 @@ public class EnrollmentInfoMapper {
 
         // Enrollment Detail mapping
         dto.setEnrollmentDetailId(projection.getEnrollmentDetailId());
-        dto.setGradeStatus(mapGradeStatus(projection.getGradeStatus()));
         dto.setDetailStatus(mapDetailStatus(projection.getEnrollDetailStatus()));
+        dto.setGradeStatus(mapGradeStatus(projection.getGradeStatus()));
 
         // Section mapping
         dto.setSectionCode(projection.getSectionCode());
@@ -36,8 +37,8 @@ public class EnrollmentInfoMapper {
         dto.setRoomNumber(projection.getRoomNumber());
 
         // Course mapping
-        dto.setCourseName(projection.getCourseName());
         dto.setCourseCode(projection.getCourseCode());
+        dto.setCourseName(projection.getCourseName());
         dto.setCourseCredits(projection.getCourseCredits());
 
         // Instructor mapping

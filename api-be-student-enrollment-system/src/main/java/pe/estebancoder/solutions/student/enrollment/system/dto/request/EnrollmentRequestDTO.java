@@ -12,6 +12,8 @@ public class EnrollmentRequestDTO {
     @NotNull(message = "El ID del estudiante es obligatorio")
     private Long studentId;
 
+    private String comments;
+
     @Valid
     @NotNull(message = "Debe seleccionar al menos una sección")
     @Size(min = 1, message = "Debe seleccionar al menos una sección")

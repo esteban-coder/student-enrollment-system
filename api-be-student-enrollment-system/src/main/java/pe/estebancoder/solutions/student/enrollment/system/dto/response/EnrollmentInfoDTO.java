@@ -6,11 +6,14 @@ import java.time.LocalDateTime;
 
 @Data
 public class EnrollmentInfoDTO {
+    // Enrollment info
     private Long enrollmentId;
     private String academicPeriod;
-    private String enrollmentStatus;  // Convertido de código a String
     private Integer totalCredits;
+    private Integer totalEnrolledCourses;
+    private String comments;
     private LocalDateTime enrollmentDate;
+    private String enrollmentStatus;  // Convertido de código a String
 
     // Student info
     private String studentCode;
@@ -18,8 +21,8 @@ public class EnrollmentInfoDTO {
 
     // Enrollment Detail info
     private Long enrollmentDetailId;
-    private String gradeStatus;      // Convertido de código a String
     private String detailStatus;     // Convertido de código a String
+    private String gradeStatus;      // Convertido de código a String // No es necesario este campo al matricularse, es util al termino del semestre
 
     // Section info
     private String sectionCode;
@@ -27,8 +30,8 @@ public class EnrollmentInfoDTO {
     private String roomNumber;
 
     // Course info
-    private String courseName;
     private String courseCode;
+    private String courseName;
     private Integer courseCredits;
 
     // Instructor info

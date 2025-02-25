@@ -9,4 +9,7 @@ import java.util.List;
 public interface EnrollmentService {
     List<EnrollmentInfoDTO> getAllEnrollmentInfo(String studentCode, String academicPeriod);
     EnrollmentResponseDTO enrollStudent(EnrollmentRequestDTO request);
+    List<EnrollmentResponseDTO> getAll();
+
+
 }

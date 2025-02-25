@@ -13,6 +13,8 @@ public class EnrollmentResponseDTO {
     private String studentFullName;
     private String academicPeriod;
     private Integer totalCredits;
+    private Integer totalEnrolledCourses;
+    private String comments;
     private LocalDateTime enrollmentDate;
     private String status;
     private List<EnrollmentDetailResponseDTO> details;
