@@ -24,12 +24,6 @@ public class EnrollmentController {
         this.enrollmentService = enrollmentService;
     }
 
-    @GetMapping("/enrollments")
-    public ResponseEntity<List<EnrollmentInfoDTO>> getAllEnrollmentInfo(@Param("studentCode") String studentCode, @Param("academicPeriod") String academicPeriod) {
-        List<EnrollmentInfoDTO> enrollments = enrollmentService.getAllEnrollmentInfo(studentCode, academicPeriod);
-        return ResponseEntity.ok(enrollments);
-    }
-
     @PostMapping("/enroll")
     public ResponseEntity<CustomResponseDTO<EnrollmentResponseDTO>> enrollStudent(@Valid @RequestBody EnrollmentRequestDTO request) {
 
@@ -43,12 +37,28 @@ public class EnrollmentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<EnrollmentResponseDTO>> getAll() {
-        return ResponseEntity.ok(enrollmentService.getAll());
+    @GetMapping("/findAll")
+    public ResponseEntity<List<EnrollmentResponseDTO>> findAll() {
+        return ResponseEntity.ok(enrollmentService.findAll());
     }
 
+    @GetMapping("/findBy")
+    public ResponseEntity<EnrollmentResponseDTO> findBy(@Param("studentCode") String studentCode, @Param("academicPeriod") String academicPeriod) {
+        return ResponseEntity.ok(enrollmentService.findBy(studentCode, academicPeriod));
+    }
 
+    @GetMapping("/getAll")
+    public ResponseEntity<List<EnrollmentInfoDTO>> getAll(@Param("studentCode") String studentCode, @Param("academicPeriod") String academicPeriod) {
+        List<EnrollmentInfoDTO> enrollments = enrollmentService.getAll(studentCode, academicPeriod);
+        return ResponseEntity.ok(enrollments);
+    }
 
+    @GetMapping("/getBy")
+    public ResponseEntity<EnrollmentResponseDTO> getBy(@Param("studentCode") String studentCode, @Param("academicPeriod") String academicPeriod) {
+        return ResponseEntity.ok(enrollmentService.getBy(studentCode, academicPeriod));
+    }
+
+    // comentario de performance: los metodo find (JPA Entities con Lazy loading) es mas rapido que los metodos get (que usan Projections), a pesar que con Projections el # de consultas es menor
+    // pero con JPA Entities no se puede hacer uso de columnas calculas, ni seleccionar determinados campos a ser devueltos por el SELECT
 
 }

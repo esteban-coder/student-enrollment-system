@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class EnrollmentDetailResponseDTO {
     private Long id;
-    private Long sectionId;
+    // private Long sectionId;
     private String sectionCode;
     private String schedule;
     private String courseCode;

@@ -74,6 +74,5 @@ public class EnrollmentEntity {
         this.status = EnrollmentStatus.ENROLLED.getCode();
         this.enrollmentDate = LocalDateTime.now();
         this.totalCreditsEarned = 0;
-        this.totalEnrolledCourses = 0;
     }
 }

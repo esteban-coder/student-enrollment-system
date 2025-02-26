@@ -7,9 +7,11 @@ import pe.estebancoder.solutions.student.enrollment.system.dto.response.Enrollme
 import java.util.List;
 
 public interface EnrollmentService {
-    List<EnrollmentInfoDTO> getAllEnrollmentInfo(String studentCode, String academicPeriod);
     EnrollmentResponseDTO enrollStudent(EnrollmentRequestDTO request);
-    List<EnrollmentResponseDTO> getAll();
+    List<EnrollmentResponseDTO> findAll();
+    EnrollmentResponseDTO findBy(String studentCode, String academicPeriod);
+    List<EnrollmentInfoDTO> getAll(String studentCode, String academicPeriod);
+    EnrollmentResponseDTO getBy(String studentCode, String academicPeriod);
 
 
 }

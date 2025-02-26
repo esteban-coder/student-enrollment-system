@@ -7,6 +7,9 @@ import pe.estebancoder.solutions.student.enrollment.system.dto.response.Enrollme
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentInfoDTO;
 import pe.estebancoder.solutions.student.enrollment.system.entity.EnrollmentDetailEntity;
 import pe.estebancoder.solutions.student.enrollment.system.mapper.EnrollmentInfoMapper;
+import pe.estebancoder.solutions.student.enrollment.system.mapper.EnrollmentMapper;
+import pe.estebancoder.solutions.student.enrollment.system.repository.EnrollmentDetailRepository;
+import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentDetailProjection;
 import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentInfoProjection;
 import pe.estebancoder.solutions.student.enrollment.system.dto.request.EnrollmentRequestDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentResponseDTO;
@@ -16,6 +19,7 @@ import pe.estebancoder.solutions.student.enrollment.system.entity.StudentEntity;
 import pe.estebancoder.solutions.student.enrollment.system.repository.EnrollmentRepository;
 import pe.estebancoder.solutions.student.enrollment.system.repository.SectionRepository;
 import pe.estebancoder.solutions.student.enrollment.system.repository.StudentRepository;
+import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentProjection;
 import pe.estebancoder.solutions.student.enrollment.system.service.EnrollmentService;
 
 import java.util.*;
@@ -29,18 +33,16 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
 
-    //private final EnrollmentDetailRepository enrollmentDetailRepository;
+    private final EnrollmentDetailRepository enrollmentDetailRepository;
 
-    public EnrollmentServiceImpl(StudentRepository studentRepository, SectionRepository sectionRepository, EnrollmentRepository enrollmentRepository/*, EnrollmentDetailRepository enrollmentDetailRepository*/) {
+    private final EnrollmentMapper mapper;
+
+    public EnrollmentServiceImpl(StudentRepository studentRepository, SectionRepository sectionRepository, EnrollmentRepository enrollmentRepository, EnrollmentMapper mapper, EnrollmentDetailRepository enrollmentDetailRepository) {
         this.studentRepository = studentRepository;
         this.sectionRepository = sectionRepository;
         this.enrollmentRepository = enrollmentRepository;
-        //this.enrollmentDetailRepository = enrollmentDetailRepository;
-    }
-
-    public List<EnrollmentInfoDTO> getAllEnrollmentInfo(String studentCode, String academicPeriod){
-        List<EnrollmentInfoProjection> projections = enrollmentRepository.getAllEnrollmentInfo(studentCode, academicPeriod);
-        return EnrollmentInfoMapper.toDTOList(projections);
+        this.enrollmentDetailRepository = enrollmentDetailRepository;
+        this.mapper = mapper;
     }
 
     @Transactional
@@ -130,46 +132,48 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             sectionRepository.updateEnrolledStudentCount(section.getId());
         }
 
-
         enrollment.setTotalCredits(totalCredits);
         enrollment.setTotalEnrolledCourses(totalEnrolledCourses);
         enrollmentRepository.save(enrollment);
 
         // Crear respuesta
-        EnrollmentResponseDTO response = new EnrollmentResponseDTO();
-        response.setId(enrollment.getId());
-        response.setStudentId(enrollment.getStudent().getId());
-        response.setStudentCode(enrollment.getStudent().getStudentCode());
-        response.setStudentFullName(enrollment.getStudent().getFullName());
-        response.setAcademicPeriod(enrollment.getAcademicPeriod());
-        response.setTotalCredits(enrollment.getTotalCredits());
-        response.setEnrollmentDate(enrollment.getEnrollmentDate());
-        // response.setStatus(enrollment.getStatus());
-        response.setStatus(EnrollmentInfoMapper.mapEnrollmentStatus(enrollment.getStatus()));
-
-        List<EnrollmentDetailResponseDTO> details = new ArrayList<>();
-        enrollment.getDetails().forEach(detail -> {
-            EnrollmentDetailResponseDTO detailResponse = new EnrollmentDetailResponseDTO();
-            detailResponse.setId(detail.getId());
-            detailResponse.setSectionId(detail.getSection().getId());
-            detailResponse.setCourseCode(detail.getSection().getCourse().getCourseCode());
-            detailResponse.setCourseName(detail.getSection().getCourse().getName());
-            detailResponse.setSectionCode(detail.getSection().getSectionCode());
-            detailResponse.setSchedule(detail.getSection().getSchedule());
-            detailResponse.setInstructorName(detail.getSection().getInstructor().getFullName());
-            detailResponse.setCredits(detail.getSection().getCourse().getCredits());
-            // detailResponse.setStatus(detail.getStatus());
-            detailResponse.setStatus(EnrollmentInfoMapper.mapEnrollmentDetailStatus(detail.getStatus()));
-            details.add(detailResponse);
-        });
-        response.setDetails(details);
-
-        return response;
+        return mapper.toDTO(enrollment);
     }
 
     @Override
-    public List<EnrollmentResponseDTO> getAll() {
-        return List.of();
+    public List<EnrollmentResponseDTO> findAll() {
+        List<EnrollmentEntity> enrollments = enrollmentRepository.findAll();
+        return mapper.toDTOList(enrollments);
+    }
+
+    @Override
+    public EnrollmentResponseDTO findBy(String studentCode, String academicPeriod) {
+        StudentEntity student = studentRepository.findByStudentCode(studentCode)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        Optional<EnrollmentEntity> optEnrollment = enrollmentRepository.findByStudentIdAndAcademicPeriod(student.getId(), academicPeriod);
+        if(!optEnrollment.isPresent()) {
+            throw new RuntimeException("Enrollment not found");
+        }
+
+        return mapper.toDTO(optEnrollment.get());
+    }
+
+    public List<EnrollmentInfoDTO> getAll(String studentCode, String academicPeriod){
+        List<EnrollmentInfoProjection> projections = enrollmentRepository.getAll(studentCode, academicPeriod);
+        return EnrollmentInfoMapper.toDTOList(projections);
+    }
+
+    @Override
+    public EnrollmentResponseDTO getBy(String studentCode, String academicPeriod) {
+        EnrollmentProjection enrollment = enrollmentRepository.getBy(studentCode, academicPeriod);
+        if(enrollment == null) {
+            throw new RuntimeException("Enrollment not found");
+        }
+
+        List<EnrollmentDetailProjection> enrollmentDetails = enrollmentDetailRepository.getEnrollmentDetail(enrollment.getEnrollmentId());
+
+        return mapper.fromProjectionToDTO(enrollment, enrollmentDetails);
     }
 }
 

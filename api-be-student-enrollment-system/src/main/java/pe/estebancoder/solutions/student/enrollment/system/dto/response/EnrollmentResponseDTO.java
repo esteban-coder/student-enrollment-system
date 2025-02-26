@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class EnrollmentResponseDTO {
     private Long id;
-    private Long studentId;
+    // private Long studentId;
     private String studentCode;
     private String studentFullName;
     private String academicPeriod;
