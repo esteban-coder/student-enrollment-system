@@ -14,10 +14,10 @@ public class StudentResponseDTO {
     private String phoneNumber;
     private String address;
     private LocalDate birthDate;
-    private String gender; // mostrar el codigo, en caso se requiera actualizar, el codigo se usa para el combobox y seleccionar el genero con el que se obtiene
+    private String gender; // en caso se entre en modo edicion, el codigo ayuda en seleccionar el genero del combobox
     private String genderText;
     private LocalDate admissionDate;
-    private String status; // debo mostrar el String no el codigo
+    private String statusText; // mostrar el Texto no el codigo, el status no se modifica desde el FrontEnd sino desde la logica del BackEnd
 
     /*
     En un futuro aplicare estos campos, algunos quizas se graben en StudentEntity y otros se calcularan en runtime cada vez que sea consultado:

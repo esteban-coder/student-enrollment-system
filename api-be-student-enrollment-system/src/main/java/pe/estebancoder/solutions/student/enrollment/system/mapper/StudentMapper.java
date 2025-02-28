@@ -22,7 +22,7 @@ public class StudentMapper {
                 .addMappings(mapper -> mapper.using(context -> {
                     StudentStatus status = StudentStatus.fromCode((String) context.getSource());
                     return status != null ? status.name() : null;
-                }).map(StudentEntity::getStatus, StudentResponseDTO::setStatus));
+                }).map(StudentEntity::getStatus, StudentResponseDTO::setStatusText));
 
         // Voy a necesitar el codigo tambien, pues al querer actualizar un Student en el FrontEnd en base al codigo voy a selecionar de un combobox, es distinto con el status, pues no es seleccionable es solo lectura en el FrontEnd
         // Mapeo desde la entidad hacia el DTO (de Gender a su nombre enum)

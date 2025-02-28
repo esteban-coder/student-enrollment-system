@@ -2,8 +2,8 @@ package pe.estebancoder.solutions.student.enrollment.system.service.impl;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.request.EnrollmentDetailRequestDTO;
-import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentDetailResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentInfoDTO;
 import pe.estebancoder.solutions.student.enrollment.system.entity.EnrollmentDetailEntity;
 import pe.estebancoder.solutions.student.enrollment.system.mapper.EnrollmentInfoMapper;
@@ -173,6 +173,19 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
         List<EnrollmentEntity> enrollments = enrollmentRepository.findAllByStudent_Id(studentOptional.get().getId());
         return mapper.toHeaderDTOList(enrollments);
+    }
+
+    @Override
+    public EnrollmentDTO searchBy(String studentCode, String academicPeriod) {
+        StudentEntity student = studentRepository.findByStudentCode(studentCode)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        Optional<EnrollmentEntity> optEnrollment = enrollmentRepository.findByStudentIdAndAcademicPeriod(student.getId(), academicPeriod);
+        if(optEnrollment.isEmpty()) {
+            throw new RuntimeException("Enrollment not found");
+        }
+
+        return mapper.toDto(optEnrollment.get());
     }
 
     @Override

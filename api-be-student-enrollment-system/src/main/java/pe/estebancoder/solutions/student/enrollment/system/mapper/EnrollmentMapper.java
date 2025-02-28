@@ -1,12 +1,12 @@
 package pe.estebancoder.solutions.student.enrollment.system.mapper;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentDetailResponseDTO;
-import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentInfoDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentResponseDTO;
+import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentDTO;
 import pe.estebancoder.solutions.student.enrollment.system.entity.EnrollmentEntity;
 import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentDetailProjection;
-import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentInfoProjection;
 import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentProjection;
 
 import java.util.ArrayList;
@@ -15,6 +15,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class EnrollmentMapper {
+
+    private final ModelMapper modelMapper;
+
+    public EnrollmentMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
+    public EnrollmentDTO toDto(EnrollmentEntity entity) {
+        return modelMapper.map(entity, EnrollmentDTO.class);
+    }
 
     public EnrollmentResponseDTO toDTO(EnrollmentEntity enrollment) {
 

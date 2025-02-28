@@ -1,10 +1,10 @@
 package pe.estebancoder.solutions.student.enrollment.system.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.CustomResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentInfoDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.request.EnrollmentRequestDTO;
@@ -47,14 +47,14 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.findAllHeaders(studentCode));
     }
 
-    @GetMapping("/getAllHeaders")
-    public ResponseEntity<List<EnrollmentResponseDTO>> getAllHeaders(@RequestParam(value = "studentCode", required = false) String studentCode) {
-        return ResponseEntity.ok(enrollmentService.getAllHeaders(studentCode));
-    }
-
     @GetMapping("/findBy")
     public ResponseEntity<EnrollmentResponseDTO> findBy(@RequestParam("studentCode") String studentCode, @RequestParam("academicPeriod") String academicPeriod) {
         return ResponseEntity.ok(enrollmentService.findBy(studentCode, academicPeriod));
+    }
+
+    @GetMapping("/searchBy")
+    public ResponseEntity<EnrollmentDTO> searchBy(@RequestParam("studentCode") String studentCode, @RequestParam("academicPeriod") String academicPeriod) {
+        return ResponseEntity.ok(enrollmentService.searchBy(studentCode, academicPeriod));
     }
 
     @GetMapping("/getAll")
@@ -66,6 +66,11 @@ public class EnrollmentController {
     @GetMapping("/getBy")
     public ResponseEntity<EnrollmentResponseDTO> getBy(@RequestParam("studentCode") String studentCode, @RequestParam("academicPeriod") String academicPeriod) {
         return ResponseEntity.ok(enrollmentService.getBy(studentCode, academicPeriod));
+    }
+
+    @GetMapping("/getAllHeaders")
+    public ResponseEntity<List<EnrollmentResponseDTO>> getAllHeaders(@RequestParam(value = "studentCode", required = false) String studentCode) {
+        return ResponseEntity.ok(enrollmentService.getAllHeaders(studentCode));
     }
 
     // comentarios de rapidez:
