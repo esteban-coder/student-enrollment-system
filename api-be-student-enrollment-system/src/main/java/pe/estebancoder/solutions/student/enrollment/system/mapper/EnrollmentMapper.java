@@ -50,9 +50,33 @@ public class EnrollmentMapper {
         return responseDTO;
     }
 
+    public EnrollmentResponseDTO toHeaderDTO(EnrollmentEntity enrollment) {
+
+        EnrollmentResponseDTO responseDTO = new EnrollmentResponseDTO();
+        responseDTO.setId(enrollment.getId());
+        // responseDTO.setStudentId(enrollment.getStudent().getId());
+        responseDTO.setStudentCode(enrollment.getStudent().getStudentCode());
+        responseDTO.setStudentFullName(enrollment.getStudent().getFullName());
+        responseDTO.setAcademicPeriod(enrollment.getAcademicPeriod());
+        responseDTO.setTotalCredits(enrollment.getTotalCredits());
+        responseDTO.setTotalEnrolledCourses(enrollment.getTotalEnrolledCourses());
+        responseDTO.setComments(enrollment.getComments());
+        responseDTO.setEnrollmentDate(enrollment.getEnrollmentDate());
+        // responseDTO.setStatus(enrollment.getStatus());
+        responseDTO.setStatus(EnrollmentInfoMapper.mapEnrollmentStatus(enrollment.getStatus()));
+
+        return responseDTO;
+    }
+
     public List<EnrollmentResponseDTO> toDTOList(List<EnrollmentEntity> enrollments) {
         return enrollments.stream()
                 .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<EnrollmentResponseDTO> toHeaderDTOList(List<EnrollmentEntity> enrollments) {
+        return enrollments.stream()
+                .map(this::toHeaderDTO)
                 .collect(Collectors.toList());
     }
 

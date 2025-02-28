@@ -50,4 +50,14 @@ public interface EnrollmentRepository extends JpaRepository<EnrollmentEntity, Lo
     """, nativeQuery = true)
     EnrollmentProjection getBy(String studentCode, String academicPeriod);
 
+    @Query(value = """
+            SELECT 
+                ENROLLMENT_ID, te.STUDENT_ID, ACADEMIC_PERIOD, TOTAL_CREDITS, TOTAL_ENROLLED_COURSES, 
+                COMMENTS, ENROLLMENT_DATE, te.STATUS, TOTAL_CREDITS_EARNED, WEIGHTED_AVERAGE
+            FROM TBL_ENROLLMENT te
+            WHERE (te.STUDENT_ID = :studentId OR :studentId IS NULL)
+            """, nativeQuery = true)
+    List<EnrollmentEntity> getAllByStudent_Id(Long studentId);
+
+    List<EnrollmentEntity> findAllByStudent_Id(Long studentId);
 }

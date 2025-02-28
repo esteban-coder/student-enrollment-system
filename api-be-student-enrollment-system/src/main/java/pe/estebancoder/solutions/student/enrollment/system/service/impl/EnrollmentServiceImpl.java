@@ -152,11 +152,48 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
         Optional<EnrollmentEntity> optEnrollment = enrollmentRepository.findByStudentIdAndAcademicPeriod(student.getId(), academicPeriod);
-        if(!optEnrollment.isPresent()) {
+        if(optEnrollment.isEmpty()) {
             throw new RuntimeException("Enrollment not found");
         }
 
         return mapper.toDTO(optEnrollment.get());
+    }
+
+    @Override
+    public List<EnrollmentResponseDTO> findAllHeaders(String studentCode) {
+        if(studentCode == null || studentCode.trim().isEmpty()) {
+            List<EnrollmentEntity> enrollments = enrollmentRepository.findAll();
+            return mapper.toHeaderDTOList(enrollments);
+        }
+        studentCode = studentCode.trim();
+        Optional<StudentEntity> studentOptional = studentRepository.findByStudentCode(studentCode);
+        if(studentOptional.isEmpty()) {
+            //throw new RuntimeException("Student not found");
+            return List.of();
+        }
+        List<EnrollmentEntity> enrollments = enrollmentRepository.findAllByStudent_Id(studentOptional.get().getId());
+        return mapper.toHeaderDTOList(enrollments);
+    }
+
+    @Override
+    public List<EnrollmentResponseDTO> getAllHeaders(String studentCode) {
+        Long studentId;
+        if(studentCode == null || studentCode.trim().isEmpty()) {
+            studentId = null;
+        }
+        else {
+            studentCode = studentCode.trim();
+            Optional<StudentEntity> studentOptional = studentRepository.findByStudentCode(studentCode);
+            if (studentOptional.isEmpty()) {
+                //throw new RuntimeException("Student not found");
+                return List.of();
+            }
+            else{
+                studentId = studentOptional.get().getId();
+            }
+        }
+        List<EnrollmentEntity> enrollments = enrollmentRepository.getAllByStudent_Id(studentId);
+        return mapper.toHeaderDTOList(enrollments);
     }
 
     public List<EnrollmentInfoDTO> getAll(String studentCode, String academicPeriod){

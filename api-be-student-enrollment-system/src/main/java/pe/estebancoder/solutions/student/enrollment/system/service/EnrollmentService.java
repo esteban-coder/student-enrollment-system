@@ -10,6 +10,8 @@ public interface EnrollmentService {
     EnrollmentResponseDTO enrollStudent(EnrollmentRequestDTO request);
     List<EnrollmentResponseDTO> findAll();
     EnrollmentResponseDTO findBy(String studentCode, String academicPeriod);
+    List<EnrollmentResponseDTO> findAllHeaders(String studentCode);
+    List<EnrollmentResponseDTO> getAllHeaders(String studentCode);
     List<EnrollmentInfoDTO> getAll(String studentCode, String academicPeriod);
     EnrollmentResponseDTO getBy(String studentCode, String academicPeriod);
 
