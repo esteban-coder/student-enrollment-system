@@ -2,6 +2,7 @@ package pe.estebancoder.solutions.student.enrollment.system.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import pe.estebancoder.solutions.student.enrollment.system.dto.StudentDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentDetailResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.response.EnrollmentResponseDTO;
 import pe.estebancoder.solutions.student.enrollment.system.dto.EnrollmentDTO;
@@ -24,6 +25,38 @@ public class EnrollmentMapper {
 
     public EnrollmentDTO toDto(EnrollmentEntity entity) {
         return modelMapper.map(entity, EnrollmentDTO.class);
+    }
+
+    public EnrollmentDTO toHeaderDto(EnrollmentEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        EnrollmentDTO dto = new EnrollmentDTO();
+        dto.setId(entity.getId());
+        dto.setAcademicPeriod(entity.getAcademicPeriod());
+        dto.setTotalCredits(entity.getTotalCredits());
+        dto.setTotalEnrolledCourses(entity.getTotalEnrolledCourses());
+        dto.setComments(entity.getComments());
+        dto.setEnrollmentDate(entity.getEnrollmentDate());
+        dto.setStatus(entity.getStatus());
+        dto.setTotalCreditsEarned(entity.getTotalCreditsEarned());
+        dto.setWeightedAverage(entity.getWeightedAverage());
+
+        // Mapear el Student utilizando ModelMapper o manualmente
+        if (entity.getStudent() != null) {
+            dto.setStudent(modelMapper.map(entity.getStudent(), StudentDTO.class));
+        }
+
+        // No se mapea el campo 'details' para este caso específico
+
+        return dto;
+    }
+
+    public List<EnrollmentDTO> toHeaderDtoList(List<EnrollmentEntity> enrollments) {
+        return enrollments.stream()
+                .map(this::toHeaderDto)
+                .collect(Collectors.toList());
     }
 
     public EnrollmentResponseDTO toDTO(EnrollmentEntity enrollment) {

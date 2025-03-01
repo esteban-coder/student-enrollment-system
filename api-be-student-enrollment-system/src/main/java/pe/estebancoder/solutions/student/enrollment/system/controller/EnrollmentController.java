@@ -25,11 +25,11 @@ public class EnrollmentController {
     }
 
     @PostMapping("/enroll")
-    public ResponseEntity<CustomResponseDTO<EnrollmentResponseDTO>> enrollStudent(@Valid @RequestBody EnrollmentRequestDTO request) {
+    public ResponseEntity<CustomResponseDTO<EnrollmentDTO>> enrollStudent(@Valid @RequestBody EnrollmentRequestDTO request) {
 
-        EnrollmentResponseDTO enrollmentDTO = enrollmentService.enrollStudent(request);
+        EnrollmentDTO enrollmentDTO = enrollmentService.enrollStudent(request);
         //return ResponseEntity.ok(enrollmentDTO);
-        CustomResponseDTO<EnrollmentResponseDTO> responseDTO = new CustomResponseDTO<>();
+        CustomResponseDTO<EnrollmentDTO> responseDTO = new CustomResponseDTO<>();
         responseDTO.setData(enrollmentDTO);
         responseDTO.setStatus(HttpStatus.CREATED.name());
         responseDTO.setTimestamp(LocalDateTime.now());
@@ -55,6 +55,11 @@ public class EnrollmentController {
     @GetMapping("/searchBy")
     public ResponseEntity<EnrollmentDTO> searchBy(@RequestParam("studentCode") String studentCode, @RequestParam("academicPeriod") String academicPeriod) {
         return ResponseEntity.ok(enrollmentService.searchBy(studentCode, academicPeriod));
+    }
+
+    @GetMapping("/searchAllHeaders")
+    public ResponseEntity<List<EnrollmentDTO>> searchAllHeaders(@RequestParam(value = "studentCode", required = false) String studentCode) {
+        return ResponseEntity.ok(enrollmentService.searchAllHeaders(studentCode));
     }
 
     @GetMapping("/getAll")

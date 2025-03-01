@@ -47,7 +47,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Transactional
     @Override
-    public EnrollmentResponseDTO enrollStudent(EnrollmentRequestDTO request) {
+    public EnrollmentDTO enrollStudent(EnrollmentRequestDTO request) {
         StudentEntity student = studentRepository.findById(request.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
@@ -137,7 +137,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         enrollmentRepository.save(enrollment);
 
         // Crear respuesta
-        return mapper.toDTO(enrollment);
+        // return mapper.toDTO(enrollment);
+        return mapper.toDto(enrollment);
     }
 
     @Override
@@ -186,6 +187,22 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
 
         return mapper.toDto(optEnrollment.get());
+    }
+
+    @Override
+    public List<EnrollmentDTO> searchAllHeaders(String studentCode) {
+        if(studentCode == null || studentCode.trim().isEmpty()) {
+            List<EnrollmentEntity> enrollments = enrollmentRepository.findAll();
+            return mapper.toHeaderDtoList(enrollments);
+        }
+        studentCode = studentCode.trim();
+        Optional<StudentEntity> studentOptional = studentRepository.findByStudentCode(studentCode);
+        if(studentOptional.isEmpty()) {
+            //throw new RuntimeException("Student not found");
+            return List.of();
+        }
+        List<EnrollmentEntity> enrollments = enrollmentRepository.findAllByStudent_Id(studentOptional.get().getId());
+        return mapper.toHeaderDtoList(enrollments);
     }
 
     @Override
