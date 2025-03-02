@@ -10,7 +10,7 @@ public class EnrollmentDetailDTO {
 
     private Long id;
     // private EnrollmentDTO enrollment;
-    private SectionDTO section;
+    private SectionWithCourseDTO section;
     private Integer credits;
     private String status;
     private LocalDateTime withdrawalDate;

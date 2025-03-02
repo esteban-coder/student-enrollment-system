@@ -5,10 +5,10 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class SectionDTO {
+public class SectionWithCourseDTO {
 
     private Long id;
-    // private CourseDTO course;
+    private CourseDTO course;
     private String sectionCode;
     private InstructorDTO instructor;
     private String academicPeriod;

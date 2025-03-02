@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CourseDTO {
+public class CourseWithSectionsDTO {
 
     private Long id;
     private String courseCode;
@@ -15,5 +15,5 @@ public class CourseDTO {
     // private DepartmentDTO department;
     private String prerequisites;
     private String status;
-    // private List<SectionDTO> sections;
+    private List<SectionDTO> sections;
 }
