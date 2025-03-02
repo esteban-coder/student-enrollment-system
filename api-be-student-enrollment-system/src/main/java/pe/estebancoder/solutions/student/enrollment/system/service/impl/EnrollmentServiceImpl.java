@@ -231,6 +231,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return EnrollmentInfoMapper.toDTOList(projections);
     }
 
+    public List<EnrollmentDTO> searchAll(String studentCode, String academicPeriod){
+        List<EnrollmentEntity> entities = enrollmentRepository.searchAll(studentCode, academicPeriod);
+        return mapper.toDtoList(entities);
+    }
+
     @Override
     public EnrollmentResponseDTO getBy(String studentCode, String academicPeriod) {
         EnrollmentProjection enrollment = enrollmentRepository.getBy(studentCode, academicPeriod);

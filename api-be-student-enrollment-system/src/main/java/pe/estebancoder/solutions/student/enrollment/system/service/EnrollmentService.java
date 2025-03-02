@@ -16,6 +16,7 @@ public interface EnrollmentService {
     List<EnrollmentDTO> searchAllHeaders(String studentCode);
     List<EnrollmentResponseDTO> getAllHeaders(String studentCode);
     List<EnrollmentInfoDTO> getAll(String studentCode, String academicPeriod);
+    List<EnrollmentDTO> searchAll(String studentCode, String academicPeriod);
     EnrollmentResponseDTO getBy(String studentCode, String academicPeriod);
 
 

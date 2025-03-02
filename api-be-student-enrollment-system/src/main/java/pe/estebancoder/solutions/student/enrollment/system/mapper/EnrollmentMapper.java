@@ -27,6 +27,12 @@ public class EnrollmentMapper {
         return modelMapper.map(entity, EnrollmentDTO.class);
     }
 
+    public List<EnrollmentDTO> toDtoList(List<EnrollmentEntity> enrollments) {
+        return enrollments.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
     public EnrollmentDTO toHeaderDto(EnrollmentEntity entity) {
         if (entity == null) {
             return null;

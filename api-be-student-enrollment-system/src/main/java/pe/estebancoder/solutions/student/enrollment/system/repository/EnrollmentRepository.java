@@ -2,6 +2,7 @@ package pe.estebancoder.solutions.student.enrollment.system.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pe.estebancoder.solutions.student.enrollment.system.repository.projection.EnrollmentInfoProjection;
 import pe.estebancoder.solutions.student.enrollment.system.entity.EnrollmentEntity;
@@ -60,4 +61,32 @@ public interface EnrollmentRepository extends JpaRepository<EnrollmentEntity, Lo
     List<EnrollmentEntity> getAllByStudent_Id(Long studentId);
 
     List<EnrollmentEntity> findAllByStudent_Id(Long studentId);
+
+    /*
+    @Query("""
+        SELECT DISTINCT e
+        FROM EnrollmentEntity e
+        JOIN FETCH e.student s
+        JOIN FETCH e.details ed
+        JOIN FETCH ed.section sec
+        JOIN FETCH sec.course c
+        JOIN FETCH sec.instructor i
+        WHERE
+            (s.studentCode = :studentCode OR :studentCode IS NULL) AND
+            (e.academicPeriod = :academicPeriod OR :academicPeriod IS NULL)
+    """)
+    */
+    @Query("""
+        SELECT DISTINCT e
+        FROM EnrollmentEntity e
+        JOIN FETCH e.student s
+        JOIN FETCH e.details ed
+        JOIN ed.section sec
+        JOIN sec.course c
+        JOIN sec.instructor i
+        WHERE
+            (s.studentCode = :studentCode OR :studentCode IS NULL) AND
+            (e.academicPeriod = :academicPeriod OR :academicPeriod IS NULL)
+    """)
+    List<EnrollmentEntity> searchAll(@Param("studentCode") String studentCode, @Param("academicPeriod") String academicPeriod);
 }
