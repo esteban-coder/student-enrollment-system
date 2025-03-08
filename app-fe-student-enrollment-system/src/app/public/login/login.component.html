@@ -1,0 +1,36 @@
+<section>
+  <div id="page-main" class="d-flex">
+    <div id="img-fondo"></div>
+    <div id="form-login">
+      <form [formGroup]="frmLogin" (ngSubmit)="onSubmit()">
+        <div class="d-flex justify-content-center">
+          <!--<img class="mb-4" src="{{baseHref}}assets/image/school-logo.png" alt="" height="77">-->
+          <img class="mb-4" src="/image/school-logo.png" alt="" height="220">
+        </div>
+        <h1 class="h3 mb-2 fw-normal">Login</h1>
+
+        <div class="form-floating">
+          <input type="email" class="form-control" id="usuario" placeholder="" formControlName="userName">
+          <label for="usuario">Usuario</label>
+          <label>Usuario</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="contrasenia" placeholder="" formControlName="password">
+          <label for="contrasenia">Clave</label>
+        </div>
+
+        <!-- <div class="checkbox text-white mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Recuérdame
+          </label>
+        </div> -->
+
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar sesión</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2025 - Página web desarrollado por <br /><a
+            href="https://estebancoder.com" class="url-link" target="_blank">Valley Spring Middle School</a> </p>
+      </form>
+    </div>
+  </div>
+  <!-- <main class="form-signin">
+    </main> -->
+</section>

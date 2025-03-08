@@ -1,0 +1,78 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Process</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Enrollments</li>
+  </ol>
+</nav>
+
+<div>
+  <form [formGroup]="frmListado" (ngSubmit)="buscar()">
+      <div class="row mb-3">
+          <div class="col-sm-4">
+              <label for="studentCode" class="form-label">Student Code</label>
+              <input type="text" formControlName="studentCode" class="form-control" id="studentCode">
+          </div>
+
+      </div>
+      <div class="row mb-3">
+          <div class="col-sm-12 text-end">
+              <button type="submit" class="btn btn-outline-secondary me-2"><i class="bi bi-search me-2"></i>Buscar</button>
+              <button type="button" class="btn btn-primary" (click)="nuevo()"><i
+                      class="bi bi-plus-lg me-2"></i>New Enrollment</button>
+          </div>
+      </div>
+  </form>
+</div>
+<div class="row">
+  <div class="col-12 table-responsive">
+      <table class="table table-bordered table-desing tabla-hover">
+          <thead>
+              <tr>
+                  <th scope="col" width="50">#</th>
+                  <th scope="col">Academic Period</th>
+                  <th scope="col">Student Code</th>
+                  <th scope="col">Student FullName</th>
+                  <th scope="col">Total Credits</th>
+                  <th scope="col"># Enrolled Courses</th>
+                  <th scope="col">Enrollment Date</th>
+                  <th scope="col">Status</th>
+                  <th scope="col" class="text-center" width="90">Action</th>
+              </tr>
+          </thead>
+          <tbody>
+            @for (enrollment of pagedItems; track $index) {
+              <tr >
+                  <th scope="row">{{(currentPage - 1) *5 + $index+1}}</th>
+                  <td>{{ enrollment.academicPeriod }}</td>
+                  <td>{{ enrollment.student.studentCode }}</td>
+                  <td>{{ enrollment.student.fullName }}</td>
+                  <td>{{ enrollment.totalCredits }}</td>
+                  <td>{{ enrollment.totalEnrolledCourses }}</td>
+                  <td>{{ enrollment.enrollmentDate }}</td>
+                  <td>{{ enrollmentStatusMap[enrollment.status] || 'Unknown' }}</td>
+                  <td class="text-center">
+                    <a class="btn btn-sm btn-outline-secondary me-2" [routerLink]="['/page/procesos/enrollments/registro/', enrollment.student.studentCode]" [queryParams]="{academicPeriod: enrollment.academicPeriod}" title="Modificar" >
+                      <i class="bi bi-pen-fill"></i>
+                    </a>
+                      <!--button class="btn btn-sm btn-outline-danger" (click)="eliminar(enrollment.id, enrollment.id)"><i
+                              class="bi bi-trash3-fill"></i></button-->
+                  </td>
+              </tr>
+            }
+          </tbody>
+      </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+  <pagination [totalItems]="enrollments.length"
+              [(ngModel)]="currentPage"
+              (pageChanged)="pageChanged($event)"
+              [itemsPerPage]="5"
+              previousText="&lsaquo;"
+              nextText="&rsaquo;"
+              firstText="&laquo;"
+              lastText="&raquo;">
+  </pagination>
+  </div>
+</div>

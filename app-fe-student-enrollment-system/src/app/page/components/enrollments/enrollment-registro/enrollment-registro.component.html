@@ -1,0 +1,193 @@
+<div class="row">
+    <div class="col-sm-7">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Procesos</a></li>
+                <li class="breadcrumb-item"><a href="#">Enrollment</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Registro</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="col-sm-5 text-end">
+        <button type="button" (click)="irListado()" class="btn btn-outline-secondary"><i
+                class="bi bi-arrow-left me-2"></i>Listado</button>
+    </div>
+</div>
+<div class="row">
+    <form [formGroup]="frmCabStudent">
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-2">
+                    <label for="dni" class="form-label">DNI<span>*</span></label>
+                    <input type="text" class="form-control" formControlName="dni" id="dni">
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <label for="email" class="form-label">Email<span>*</span></label>
+                    <input type="text" class="form-control" formControlName="email" id="email">
+                    <div class="invalid-feedback">
+                        <!-- <span *ngIf="f.email.errors?.required">Student is required.</span>-->
+                    </div>
+                </div>
+                <div class="col-2">
+                    <label for="studentId" class="form-label">Id<span>*</span></label>
+                    <input type="text" class="form-control" formControlName="studentId" id="studentId">
+                    <!-- [ngClass]="{ 'is-invalid': fpc['studentId'].touched && fpc['studentId'].errors }">
+                    @if (fpc['studentId'].touched && fpc['studentId'].errors && fpc['studentId'].errors['required']) {
+                    <div class="invalid-feedback">
+                        <div>Student Id is required</div>
+                    </div>
+                    } -->
+                </div>
+                <div class="col-2">
+                    <label for="studentCode" class="form-label">Student Code<span>*</span></label>
+                    <input type="text" class="form-control" formControlName="studentCode" id="studentCode">
+                </div>
+                <div class="col-2" style="margin-top: 30px;">
+                    <button type="button" class="btn btn-outline-danger" (click)="findStudentByStudentCode()"><i
+                            class="fas fa-plus mr-2"></i>Search Student</button>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-4">
+                    <label for="fullName" class="form-label">Full Name<span>*</span></label>
+                    <input type="text" class="form-control" formControlName="fullName" id="fullName">
+                    <div class="invalid-feedback">
+                        <!-- <span *ngIf="f.fullName.errors?.required">Student is required.</span>-->
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <label for="phoneNumber" class="form-label">Phone Number<span>*</span></label>
+                    <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber">
+                    <div class="invalid-feedback">
+                        <!-- <span *ngIf="f.phoneNumber.errors?.required">Student is required.</span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+
+        </div>
+
+        <div class="mb-3">
+            <label for="comments" class="form-label">Comments<span>*</span></label>
+            <input type="text" class="form-control" id="comments" formControlName="comments" placeholder=""
+                [ngClass]="{ 'is-invalid': fpc['comments'].touched && fpc['comments'].errors }">
+            @if (fpc['comments'].touched && fpc['comments'].errors) {
+            <div class="invalid-feedback">
+                @if (fpc['comments'].errors['required']) {
+                <div>Comments is required</div>
+                }
+                @if (fpc['comments'].hasError('minlength')) {
+                <div>
+                    Comments must be at least {{fpc["comments"].errors['minlength'].requiredLength}} character
+                </div>
+                }
+                @if (fpc['comments'].hasError('maxlength')) {
+                <div>
+                    Comments must be at most {{fpc["comments"].errors['maxlength'].requiredLength}} characters
+                </div>
+                }
+            </div>
+            }
+        </div>
+
+        <div class="row">
+            <div class="col-10 mb-2 text-right">
+                <button type="button" class="btn btn-outline-primary" (click)="openAddCourseModal()">
+                    <i class="fas fa-plus mr-2"></i>Add Course</button>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Course</th>
+                            <th scope="col">Section</th>
+                            <th scope="col">Instructor</th>
+                            <th scope="col">Credits</th>
+                            <th scope="col">Schedule</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" width="120px" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of details; track $index) {
+                        <tr>
+                            @if(item.status!=='-'){
+                            <ng-container>
+                                <th scope="row">{{$index + 1}}</th>
+                                <td>{{item.section.course.name}}</td>
+                                <td>{{item.section.sectionCode}}</td>
+                                <td>{{item.section.instructor.fullName}}</td>
+                                <td>{{item.credits}}</td>
+                                <td>{{item.section.schedule}}</td>
+                                <td>{{enrollmentDetailStatusMap[item.status] || 'Unknown'}}</td>
+                                <td class="text-center">
+                                    -
+                                </td>
+                            </ng-container>
+                            }
+                            @if(item.status==='-'){
+                            <ng-container>
+                                <th scope="row">{{$index + 1}}</th>
+                                <td>{{item.section.course.name}}</td>
+                                <td>{{item.section.sectionCode}}</td>
+                                <td>{{item.section.instructor.fullName}}</td>
+                                <td>{{item.credits}}</td>
+                                <td>{{item.section.schedule}}</td>
+                                <td>-</td>
+                                <td class="text-center">
+                                    <!--button class="btn btn-sm btn-outline-secondary me-2"><i
+                                            class="bi bi-pen-fill"></i></button-->
+                                    <button class="btn btn-sm btn-outline-danger" (click)="remove(item)"><i
+                                            class="bi bi-trash3-fill"></i></button>
+                                </td>
+                            </ng-container>
+                            }
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <!--div class="col-sm-8 text-end">
+                <h2> Total courses => <span>{{totals.totalCourses}}</span></h2>
+                <h2> Total credits => <span>{{totals.totalCredits}}</span></h2>
+            </div-->
+            
+            <div class="col-sm-8 d-flex justify-content-center align-items-center">
+                <div class="me-5 text-center">
+                    <h5 class="mb-0 text-muted">Total courses</h5>
+                    <span class="badge bg-secondary text-dark fs-5">{{totals.totalCourses}}</span>
+                </div>
+                <div class="text-center">
+                    <h5 class="mb-0 text-muted">Total credits</h5>
+                    <span class="badge bg-secondary text-dark fs-5">{{totals.totalCredits}}</span>
+                </div>
+            </div>
+        
+            <div class="col-sm-4 text-end mt-4">
+                <button type="button" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-eraser me-2"></i>Limpiar
+                </button>
+                <button type="button" class="btn btn-primary" (click)="save()">
+                    <i class="bi bi-save me-2"></i>Guardar
+                </button>
+            </div>
+        </div>
+        
+
+    </form>
+</div>

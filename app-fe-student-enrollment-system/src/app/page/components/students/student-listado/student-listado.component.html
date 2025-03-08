@@ -1,0 +1,82 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Maintenance</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Students</li>
+    </ol>
+  </nav>
+  
+  <div>
+    <form [formGroup]="frmListado" (ngSubmit)="buscar()">
+        <div class="row mb-3">
+            <div class="col-sm-4">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" formControlName="name" class="form-control" id="name">
+            </div>
+  
+  <!--           <div class="col-sm-4">
+                <label for="nombres" class="form-label">RUC</label>
+                <input type="email" formControlName="ruc"  class="form-control" id="ruc">
+            </div> -->
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-12 text-end">
+                <button type="submit" class="btn btn-outline-secondary me-2"><i class="bi bi-search me-2"></i>Search</button>
+                <button type="button" class="btn btn-primary" (click)="nuevo()"><i
+                        class="bi bi-plus-lg me-2"></i>New</button>
+            </div>
+        </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-12 table-responsive">
+        <table class="table table-bordered table-desing tabla-hover">
+            <thead>
+                <tr>
+                    <th scope="col" width="50">#</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">DNI</th> 
+                    <th scope="col">Admission Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="text-center" width="90">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+              @for (student of pagedItems; track $index) {
+              <!-- @for (student of students; track $index) { -->
+                <tr >
+                    <th scope="row">{{(currentPage - 1) *5 + $index+1}}</th>
+                    <td>{{ student.studentCode }}</td>
+                    <td>{{ student.fullName }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.dni }}</td>
+                    <td>{{ student.admissionDate }}</td>
+                    <td>{{ student.statusText }}</td>
+                    <td class="text-center">
+                      <a class="btn btn-sm btn-outline-secondary me-2" [routerLink]="['/page/mantenimiento/students/registro/', student.id]" title="Update" >
+                        <i class="bi bi-pen-fill"></i>
+                      </a>
+                        <button class="btn btn-sm btn-outline-danger" (click)="eliminar(student.id, student.fullName)"><i
+                                class="bi bi-trash3-fill"></i></button>
+                    </td>
+                </tr>
+              }
+            </tbody>
+        </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+    <pagination [totalItems]="students.length"
+                [(ngModel)]="currentPage"
+                (pageChanged)="pageChanged($event)"
+                [itemsPerPage]="5"
+                previousText="&lsaquo;"
+                nextText="&rsaquo;"
+                firstText="&laquo;"
+                lastText="&raquo;">
+    </pagination>
+    </div>
+  </div>
+  

@@ -1,0 +1,92 @@
+$color_primario:#070519;
+$color_texto_white:rgba(255, 255, 255, .8);
+
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  html {
+    height: -webkit-fill-available;
+  }
+
+  main {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+
+  .bi {
+    vertical-align: -.125em;
+    pointer-events: none;
+    fill: currentColor;
+  }
+
+
+//   .nav-flush .nav-link {
+//     border-radius: 0;
+//   }
+
+  .btn-toggle, .link {
+    display: inline-flex;
+    align-items: center;
+    padding: .563rem 0.9375rem;
+    font-weight: 600;
+    color: $color_texto_white;
+    background-color: transparent;
+    border: 0;
+    text-decoration: none;
+    justify-content: space-between;
+  }
+
+  .btn-toggle:hover,
+  .btn-toggle:focus, .link:hover, .link:focus {
+    color: #fff;
+    background-color: rgba(255,255,255,.2);
+  }
+
+  .btn-toggle::after {
+    width: 1.25em;
+    line-height: 0;
+    content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAAZklEQVQ4jd3SOwqDYBAE4NU6pRD02BHPYhO8RVBPkGN8abSRv1ARI065j9nZYSIuB1R447lmPk/UvhExRkS3liSlIsMLA8p7kDT44LHsp0w8DtP1Gv3mF/6+PJu2PUgo0O5O4en4AQRIhQXoD4/gAAAAAElFTkSuQmCC");
+    transition: transform .35s ease;
+    transform-origin: .5em 50%;
+  }
+
+  .btn-toggle[aria-expanded="true"] {
+    color: #fff;
+  }
+  .btn-toggle[aria-expanded="true"]::after {
+    transform: rotate(90deg);
+  }
+
+  .btn-toggle-nav a {
+    display: inline-flex;
+    width: 100%;
+    padding: 0.625rem 0.9375rem 0.625rem 27px ;
+    text-decoration: none;
+    color:rgba(255, 255, 255, .8);
+  }
+  .btn-toggle-nav a:hover,
+  .btn-toggle-nav a:focus {
+    background-color: rgba(255, 255, 255, .2);
+  }
+    .active{
+        background-color: rgba(255, 255, 255, .2);
+    }
+
+
+  .fw-semibold { font-weight: 600; }
+  .lh-tight { line-height: 1.25; }
+
+
+
+#sdbar_style{
+    background-color: $color_primario;
+    height: 100%;
+}

@@ -1,0 +1,150 @@
+<div class="row">
+    <div class="col-sm-7">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Maintenance</a></li>
+                <li class="breadcrumb-item"><a href="#">Students</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Register</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="col-sm-5 text-end">
+        <button type="button" (click)="irListado()" class="btn btn-outline-secondary"><i
+                class="bi bi-arrow-left me-2"></i>Back to list</button>
+    </div>
+</div>
+<div [formGroup]="frmRegistro">
+
+    <div class="mb-3">
+        <label for="dni" class="form-label">DNI<span>*</span></label>
+        <input type="text" class="form-control" formControlName="dni" id="dni"
+            [ngClass]="{ 'is-invalid': f['dni'].touched && f['dni'].errors }">
+
+        @if (f['dni'].touched && f['dni'].errors) {
+        <div class="invalid-feedback">
+            @for (message of getErrorMessages('dni'); track message) {
+            <div>{{ message }}</div>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label for="fullName" class="form-label">Full Name<span>*</span></label>
+        <input type="text" class="form-control" formControlName="fullName" id="fullName"
+            [ngClass]="{ 'is-invalid': f['fullName'].touched && f['fullName'].errors }">
+
+        @if (f['fullName'].touched && f['fullName'].errors) {
+        <div class="invalid-feedback">
+            @for (message of getErrorMessages('fullName'); track message) {
+            <div>{{ message }}</div>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email<span>*</span></label>
+        <input type="text" class="form-control" formControlName="email" id="email"
+            [ngClass]="{ 'is-invalid': f['email'].touched && f['email'].errors }">
+
+        @if (f['email'].touched && f['email'].errors) {
+        <div class="invalid-feedback">
+            @for (message of getErrorMessages('email'); track message) {
+            <div>{{ message }}</div>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Phone Number<span>*</span></label>
+        <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber"
+            [ngClass]="{ 'is-invalid': f['phoneNumber'].touched && f['phoneNumber'].errors }">
+
+        @if (f['phoneNumber'].touched && f['phoneNumber'].errors) {
+        <div class="invalid-feedback">
+            @for (message of getErrorMessages('phoneNumber'); track message) {
+            <div>{{ message }}</div>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label for="address" class="form-label">Address<span>*</span></label>
+        <input type="text" class="form-control" formControlName="address" id="address"
+            [ngClass]="{ 'is-invalid': f['address'].touched && f['address'].errors }">
+
+        @if (f['address'].touched && f['address'].errors) {
+        <div class="invalid-feedback">
+            @for (message of getErrorMessages('address'); track message) {
+            <div>{{ message }}</div>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label for="birthDate" class="form-label">Birth Date<span>*</span></label>
+        <input type="text" class="form-control" formControlName="birthDate" id="birthDate"
+            [ngClass]="{ 'is-invalid': f['birthDate'].touched && f['birthDate'].errors }">
+
+        @if (f['birthDate'].touched && f['birthDate'].errors) {
+        <div class="invalid-feedback">
+            @for (message of getErrorMessages('birthDate'); track message) {
+            <div>{{ message }}</div>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label d-block">Gender<span>*</span></label>
+        <div class="btn-group" role="group">
+            <input type="radio" class="btn-check" value="M" formControlName="gender" id="genderMale" autocomplete="off">
+            <label class="btn btn-outline-primary" for="genderMale">Male</label>
+
+            <input type="radio" class="btn-check" value="F" formControlName="gender" id="genderFemale"
+                autocomplete="off">
+            <label class="btn btn-outline-primary" for="genderFemale">Female</label>
+        </div>
+        @if (f['gender'].touched && f['gender'].errors) {
+        <div class="invalid-feedback d-block">
+            @for (message of getErrorMessages('gender'); track message) {
+            <div>{{ message }}</div>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label for="admissionDate" class="form-label">Admission Date<span>*</span></label>
+        <div class="col-md-4">
+          <input type="date"
+                style="max-width: 200px;"
+                 class="form-control" 
+                 formControlName="admissionDate" 
+                 id="admissionDate"
+                 [ngClass]="{ 'is-invalid': f['admissionDate'].touched && f['admissionDate'].errors }">
+                
+          @if (f['admissionDate'].touched && f['admissionDate'].errors) {
+            <div class="invalid-feedback">
+              @for (message of getErrorMessages('admissionDate'); track $index) {
+                <div>{{ message }}</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+
+    <div class="row mb-3">
+        <div class="col-sm-12 text-end">
+            <button type="button" class="btn btn-outline-secondary me-2" (click)="limpiar()"><i
+                    class="bi bi-eraser me-2"></i>Reset</button>
+            <button type="button" class="btn btn-primary" (click)="grabar()"><i
+                    class="bi bi-save me-2"></i>Save</button>
+        </div>
+    </div>
+</div>

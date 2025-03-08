@@ -1,0 +1,13 @@
+
+
+npm install sweetalert2
+
+npm install ngx-toastr --save
+
+npm install @angular/animations --save
+
+
+ng add ngx-bootstrap  --component pagination
+
+
+
