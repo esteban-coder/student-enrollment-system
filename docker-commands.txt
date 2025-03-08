@@ -1,0 +1,29 @@
+previamente:
+- mvn clean package -DskipTests
+$ ./mvnw clean package -DskipTests
+- copiar el archivo Dockerfile en la raiz de la estructura de proyecto
+
+1) con Dockerfile unicamente
+
+--construir image
+docker build -t student-enrollment:1.0.0 .
+
+--si queremos eliminar un container
+docker rm adf17ec87591
+
+--ejecutar container
+docker run -p 8082:8082 --name student-enrollment-container student-enrollment:1.0.0
+
+--listar todos los containers
+docker ps -a
+
+--lista images
+docker images
+
+--eliminar imagen
+docker rmi [image_id]
+
+
+2) con docker-compose
+
+docker compose up -d

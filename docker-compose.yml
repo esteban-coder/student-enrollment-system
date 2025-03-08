@@ -1,0 +1,10 @@
+---
+version: '3'
+services:
+    student-enrollment-service:
+        container_name: student-enrollment-container
+        build:
+            context: ./api-be-student-enrollment-system
+        image: student-enrollment-api:1.0.0
+        ports:
+            - 8082:8082
